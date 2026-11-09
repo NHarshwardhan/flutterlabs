@@ -1,0 +1,2791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 3 - Flutter Foundations | Flutter Gurugram 2026</title>
+<style>
+
+:root{
+  --ink:#0b1020;
+  --body:#2b3348;
+  --muted:#6b7591;
+  --line:#e3e8f3;
+  --soft:#f5f7fc;
+  --brand:#5b4bff;
+  --brand-2:#00c2a8;
+  --accent:#ff7a59;
+  --amber:#f5a524;
+  --code-bg:#0e1526;
+  --code-ink:#e6edf3;
+  --shadow:0 18px 45px -22px rgba(17,24,64,.35);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:#eef1f8;
+  color:var(--body);
+  font-family:"Segoe UI Variable Text","Segoe UI",Inter,system-ui,-apple-system,Arial,sans-serif;
+  font-size:14px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+}
+h1,h2,h3,h4{color:var(--ink);line-height:1.18;margin:0;letter-spacing:-.02em}
+p{margin:0}
+a{color:var(--brand);text-decoration:none}
+code,pre,kbd{font-family:"Cascadia Mono","Cascadia Code",Consolas,"SF Mono",Menlo,monospace}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:236px minmax(0,1fr);gap:0;max-width:1320px;margin:0 auto}
+.rail{
+  position:sticky;top:0;height:100vh;padding:26px 20px;
+  display:flex;flex-direction:column;gap:22px;
+  border-right:1px solid rgba(255,255,255,.06);
+  background:#0c1222;color:#c9d3ea;
+}
+.rail-brand{display:flex;align-items:center;gap:10px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.rail-brand .logo{
+  width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));font-size:13px;color:#fff;
+}
+.rail nav{display:flex;flex-direction:column;gap:2px;overflow:auto}
+.rail nav a{
+  display:flex;gap:10px;align-items:baseline;
+  padding:7px 10px;border-radius:8px;color:#93a0bd;font-size:12.5px;font-weight:500;
+  transition:background .18s,color .18s,transform .18s;
+}
+.rail nav a span{font-size:10px;font-variant-numeric:tabular-nums;color:#5f6c8a;font-weight:700}
+.rail nav a:hover{background:rgba(255,255,255,.06);color:#fff;transform:translateX(2px)}
+.rail nav a.active{background:rgba(91,75,255,.18);color:#fff}
+.rail nav a.active span{color:var(--brand-2)}
+.rail-foot{margin-top:auto;font-size:11px;line-height:1.5;color:#5f6c8a;border-top:1px solid rgba(255,255,255,.08);padding-top:14px}
+.main{padding:34px 40px 70px;min-width:0}
+.paper{max-width:900px;margin:0 auto}
+
+/* ---------- cover ---------- */
+.cover{
+  position:relative;overflow:hidden;border-radius:22px;display:flex;min-height:600px;
+  background:
+    radial-gradient(900px 420px at 88% -12%,rgba(0,194,168,.28),transparent 62%),
+    radial-gradient(700px 420px at 4% 110%,rgba(91,75,255,.5),transparent 60%),
+    #0a1020;
+  color:#e8edf9;padding:38px 40px 34px;box-shadow:var(--shadow);
+}
+.cover::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:38px 38px;mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%);
+}
+.cover-inner{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;width:100%}
+.cover-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.16);color:#dfe6f7;
+}
+.pill.ghost{background:transparent;color:#8f9cc0}
+.cover h1{font-size:56px;color:#fff;margin:26px 0 0;letter-spacing:-.035em;line-height:.98}
+.cover h1 .grad{
+  background:linear-gradient(96deg,#8f7bff,#00e0c2 62%,#7ef0ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cover .lede{margin-top:16px;max-width:590px;color:#aab6d4;font-size:14.5px;line-height:1.6}
+.cover .lede code{color:#cfe8ff;background:rgba(255,255,255,.08);padding:1px 5px;border-radius:5px;font-size:12.5px}
+.cover-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.cover-tags span{
+  font-size:11px;font-weight:600;color:#c4cee6;padding:5px 10px;border-radius:7px;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);
+}
+.cover-term{
+  margin-top:26px;background:#060b16;border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;overflow:hidden;max-width:560px;box-shadow:0 12px 30px -12px #000;
+}
+.cover-term .term-bar{background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.cover-term pre{margin:0;padding:14px 16px;font-size:12.5px;line-height:1.7;color:#dbe6ff}
+.cover-term .k{color:#c792ea}.cover-term .s{color:#c3e88d}.cover-term .f{color:#ffcb6b}
+.caret{display:inline-block;width:8px;height:14px;background:#7ef0ff;margin-left:3px;vertical-align:-2px;animation:blink 1.05s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.cover-foot{margin-top:40px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6d7ba0;font-weight:700}
+
+/* ---------- toc ---------- */
+.toc{padding:34px 2px 6px}
+.eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--brand)}
+.toc h2{font-size:23px;margin:6px 0 18px}
+.toc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.toc-grid a{
+  display:grid;grid-template-columns:34px 1fr;gap:2px 12px;
+  padding:11px 13px;border-radius:11px;background:#fff;border:1px solid var(--line);
+  color:var(--body);transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.toc-grid a:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfd6ea}
+.toc-grid b{grid-row:span 2;align-self:center;font-size:15px;color:var(--brand);font-variant-numeric:tabular-nums}
+.toc-grid span{font-weight:600;color:var(--ink);font-size:13px}
+.toc-grid em{font-style:normal;font-size:11.5px;color:var(--muted)}
+.howto{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}
+.howto div{background:var(--soft);border:1px dashed #ccd5ea;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#4a5470}
+.howto b{display:block;color:var(--brand);font-size:10px;letter-spacing:.14em;margin-bottom:3px}
+
+/* ---------- steps ---------- */
+.step{padding-top:40px}
+.step-head{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start;margin-bottom:14px}
+.step-no{
+  width:48px;height:48px;border-radius:15px;display:grid;place-items:center;
+  font-weight:800;font-size:16px;color:#fff;letter-spacing:-.02em;
+  background:linear-gradient(140deg,#6a5bff,#4a3ae6);
+  box-shadow:0 10px 22px -10px #5b4bff;
+}
+.step:nth-of-type(odd) .step-no{background:linear-gradient(140deg,#12c9ae,#049f8a);box-shadow:0 10px 22px -10px #00c2a8}
+.step-head h2{font-size:25px;margin-top:1px}
+.step-sub{margin-top:3px;color:var(--muted);font-size:12.8px}
+.prog{height:4px;background:#e7ebf5;border-radius:99px;margin:2px 0 18px;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--brand),var(--brand-2));width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.prog i.in{width:var(--p)}
+
+/* ---------- code ---------- */
+figure.code{
+  margin:11px 0;background:var(--code-bg);border-radius:12px;overflow:hidden;
+  border:1px solid #182238;box-shadow:0 14px 32px -20px rgba(9,15,32,.7);
+}
+figure.code figcaption{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:8px 13px;background:#121b2e;border-bottom:1px solid #1c2740;
+  font-size:11px;color:#93a4c4;
+}
+figure.code figcaption .file{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:#c9d6ee}
+figure.code figcaption .file::before{content:"";width:7px;height:7px;border-radius:99px;background:var(--brand-2);box-shadow:0 0 0 3px rgba(0,194,168,.16)}
+.copy{
+  border:1px solid #2a3854;background:#182339;color:#9fb0cf;border-radius:6px;
+  font-size:10.5px;padding:3px 8px;cursor:pointer;font-family:inherit;transition:.18s;
+}
+.copy:hover{background:#22304c;color:#fff}
+figure.code pre{margin:0;padding:12px 15px;overflow:auto}
+figure.code code{font-size:12.4px;line-height:1.72;color:var(--code-ink);white-space:pre;display:block;tab-size:3}
+.tok-k{color:#c792ea}.tok-t{color:#82aaff}.tok-T{color:#ffcb6b}
+.tok-s{color:#c3e88d}.tok-i{color:#ff9e64}.tok-n{color:#f78c6c}
+.tok-c{color:#5d6f8f;font-style:italic}.tok-f{color:#ffcb6b}
+
+/* ---------- run chip ---------- */
+.run{display:flex;align-items:center;gap:9px;margin:10px 0 4px;flex-wrap:wrap}
+.run-label{font-size:9.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-2)}
+.run code{background:#0f1b2b;color:#bfe9ff;border:1px solid #1d3348;border-radius:7px;padding:5px 10px;font-size:12px}
+.run code::before{content:"$ ";color:#4d6b83}
+
+/* ---------- terminal ---------- */
+.term{margin:11px 0;border-radius:12px;overflow:hidden;background:#08111d;border:1px solid #1a2a3d;box-shadow:0 14px 32px -22px #000}
+.term-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#0e1a27;border-bottom:1px solid #17283a}
+.term-bar i{width:8px;height:8px;border-radius:99px;background:#2b3c50}
+.term-bar i:nth-child(1){background:#ff5f57}.term-bar i:nth-child(2){background:#febc2e}.term-bar i:nth-child(3){background:#28c840}
+.term-bar span{margin-left:6px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#6d829c;font-weight:700}
+.term-bar .runbtn{
+  margin-left:auto;border:1px solid #24405c;background:#10263b;color:#8fd8ff;border-radius:6px;
+  font:600 10.5px/1 "Segoe UI",sans-serif;padding:4px 9px;cursor:pointer;transition:.18s;
+}
+.term-bar .runbtn:hover{background:#153350;color:#fff}
+.term-body{margin:0;padding:12px 15px;font-size:12.2px;line-height:1.72;color:#d6e4f5;white-space:pre-wrap}
+.term-body .cmd{color:#5f7f9c}
+.term-body .cmd::before{content:"$ ";color:#31d6a4}
+.term-body .ok{color:#7ef0b0}
+.term-body .dim{color:#7b8fa8}
+.term-body .typed{color:#ffd479}
+.term-body .err{color:#ff8c8c}
+.term-body .ln{display:block}
+.cursor{display:inline-block;width:7px;height:13px;background:#7ef0ff;vertical-align:-2px;margin-left:2px;animation:blink 1.05s steps(1) infinite}
+.out-tag{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-2);margin-top:14px}
+.out-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--brand-2)}
+
+/* ---------- notes ---------- */
+.note{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:11px 13px;border-radius:11px;margin:10px 0;border:1px solid;font-size:12.5px;break-inside:avoid}
+.note b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+.note p{color:#3c4560}
+.note .ico{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+.note.tip{background:#effcf8;border-color:#c3f0e5}
+.note.tip .ico{background:#06a98f}.note.tip b{color:#068b76}
+.note.warn{background:#fff9ec;border-color:#f6e2b4}
+.note.warn .ico{background:#e2a11a}.note.warn b{color:#a97606}
+.note.fix{background:#fff1f1;border-color:#f7cccc}
+.note.fix .ico{background:#e05555}.note.fix b{color:#b93a3a}
+.note.info{background:#f2f0ff;border-color:#d9d3ff}
+.note.info .ico{background:var(--brand)}.note.info b{color:#4a3ae6}
+.note code{background:rgba(11,16,32,.06);padding:1px 5px;border-radius:5px;font-size:11.6px;color:#20293f}
+.note b code{text-transform:none;letter-spacing:0}
+
+/* ---------- cards / tables ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 0}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;break-inside:avoid}
+.card h4{font-size:12.5px;margin-bottom:4px}
+.card p{font-size:11.8px;color:var(--muted);line-height:1.55}
+.card .url{display:block;margin-top:7px;font-size:11px;word-break:break-all;color:var(--brand);font-family:"Cascadia Mono",Consolas,monospace}
+.card .num{font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--brand-2);text-transform:uppercase}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:11.8px;background:#fff;border-radius:10px;overflow:hidden;break-inside:avoid}
+th{background:#0f1729;color:#dfe8fa;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:7px 10px}
+td{padding:5.5px 10px;border-top:1px solid #edf0f8;color:#39425c}
+td code,th code{font-size:11.4px;background:rgba(91,75,255,.08);color:#3a2fbf;padding:1px 5px;border-radius:5px}
+tr:nth-child(even) td{background:#fafbfe}
+
+/* ---------- steps list ---------- */
+.olist{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px;counter-reset:li}
+.olist li{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;font-size:12.5px;color:#3c4560;break-inside:avoid}
+.olist li::before{
+  counter-increment:li;content:counter(li,decimal-leading-zero);
+  font-size:10px;font-weight:800;color:var(--brand);background:#f0eeff;border-radius:6px;
+  width:24px;height:24px;display:grid;place-items:center;
+}
+.olist li b{color:var(--ink)}
+kbd{
+  display:inline-block;background:#fff;border:1px solid #d5dbe9;border-bottom-width:2px;
+  border-radius:5px;padding:0 5px;font-size:11px;color:#2b3348;line-height:1.55;
+}
+
+/* ---------- experiments ---------- */
+.ex-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0}
+.ex{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;break-inside:avoid}
+.ex-head{padding:7px 11px;font-size:11px;font-weight:700;color:var(--ink);background:var(--soft);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+.ex-head code{font-weight:600;color:var(--brand);background:none;font-size:11px}
+.ex pre{margin:0;padding:9px 11px;background:#0e1526;color:#dbe6f7;font-size:11.2px;line-height:1.6;white-space:pre-wrap;overflow:auto}
+.ex-out{display:flex;gap:8px;align-items:baseline;padding:7px 11px;font-family:"Cascadia Mono",Consolas,monospace;font-size:11.4px;color:#0a7a68;background:#effcf8;border-top:1px solid #c3f0e5}
+.ex-out b{font-family:"Segoe UI",sans-serif;font-size:9px;letter-spacing:.14em;color:#06a98f}
+.outline{display:flex;align-items:baseline;gap:9px;margin:7px 0 0;font-size:11.8px;color:#2f384f}
+.outline b{font-family:"Segoe UI",sans-serif;font-size:9px;letter-spacing:.14em;color:#06a98f;text-transform:uppercase}
+.outline code{font-family:"Cascadia Mono",Consolas,monospace;font-size:11.6px;color:#1f5f52;background:#effcf8;border:1px solid #c3f0e5;border-radius:5px;padding:1px 6px}
+
+/* ---------- playground ---------- */
+.playground{border:1px solid #cfd7ea;border-radius:13px;overflow:hidden;background:#fff;margin:14px 0;break-inside:avoid}
+.pg-head{display:flex;align-items:center;gap:8px;padding:9px 13px;background:linear-gradient(90deg,#f4f2ff,#eefcf9);border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:#3b3f66;letter-spacing:.02em}
+.pg-head .dot{width:6px;height:6px;border-radius:99px;background:var(--brand);box-shadow:0 0 0 4px rgba(91,75,255,.12)}
+.pg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:12px 13px}
+.pg-grid label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:grid;gap:4px}
+.pg-grid input{
+  width:100%;border:1px solid #d6ddec;border-radius:8px;padding:7px 9px;
+  font:600 12.5px "Cascadia Mono",Consolas,monospace;color:var(--ink);background:#fbfcff;outline:none;
+}
+.pg-grid input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(91,75,255,.13)}
+.playground .term{border:0;border-radius:0;margin:0;box-shadow:none}
+.playground .term-body{min-height:52px}
+
+/* ---------- challenges ---------- */
+.chal{display:grid;gap:9px;margin:12px 0}
+.chal details,.chal .ch{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 14px;break-inside:avoid}
+.chal h4{font-size:12.5px;display:flex;gap:8px;align-items:baseline}
+.chal h4 span{font-size:9.5px;font-weight:800;letter-spacing:.1em;color:var(--brand-2)}
+.chal p{font-size:12px;color:#4a5470;margin-top:2px}
+.chal .hint{font-size:11.5px;color:var(--muted);margin-top:5px}
+.chal .hint b{color:#7b849c;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase}
+
+/* ---------- vscode mock ---------- */
+.vscode{border-radius:12px;overflow:hidden;border:1px solid #1c2740;background:#0b1220;box-shadow:var(--shadow);margin:12px 0;break-inside:avoid}
+.vs-title{display:flex;align-items:center;gap:6px;padding:7px 11px;background:#0f1a2b;border-bottom:1px solid #1c2740;font-size:10.5px;color:#8fa1c0}
+.vs-title i{width:8px;height:8px;border-radius:99px;background:#ff5f57}
+.vs-title i:nth-child(2){background:#febc2e}
+.vs-title i:nth-child(3){background:#28c840}
+.vs-title span{margin-left:6px;letter-spacing:.04em}
+.vs-body{display:grid;grid-template-columns:134px 1fr;min-height:206px}
+.vs-side{background:#0a1322;border-right:1px solid #16223a;padding:9px 0;font-size:10.5px;color:#6d7f9c}
+.vs-side span{display:block;padding:3px 12px}
+.vs-side .on{color:#cdd8ee;background:rgba(91,75,255,.16)}
+.vs-main{position:relative}
+.vs-tabs{display:flex;gap:2px;padding:6px 8px 0;background:#0d1727;font-size:10px;color:#8494ae}
+.vs-tab{padding:4px 9px;border-radius:5px 5px 0 0;background:#0b1220;color:#cdd8ee}
+.vs-code{padding:10px 14px;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.8px;line-height:1.78;color:#c7d4e8}
+.vs-code .ln-no{display:inline-block;width:18px;color:#3f5372;font-size:9px}
+.vs-palette{position:absolute;left:26px;right:26px;bottom:12px;background:#111d31;border:1px solid #26374f;border-radius:8px;box-shadow:0 14px 30px -10px #000;overflow:hidden}
+.vs-input{padding:7px 10px;font-size:11px;color:#dbe6f7;border-bottom:1px solid #22334b;display:flex;align-items:center}
+.vs-caret{width:1px;height:12px;background:#7ef0ff;display:inline-block;margin-left:1px;animation:blink 1s steps(1) infinite}
+.vs-item{padding:5px 10px;font-size:10.5px;color:#93a4c0;display:flex;justify-content:space-between;gap:8px}
+.vs-item.sel{background:#1b2c45;color:#fff}
+.vs-item b{font-weight:600}
+.vs-item span{font-size:9px;color:#6f82a0}
+.tree{margin:6px 0 0;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.6px;line-height:1.65;color:#4a5470;white-space:pre}
+.drill{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;margin-top:6px}
+.drill span{display:flex;justify-content:space-between;gap:8px;align-items:baseline;border-bottom:1px dashed #e7ebf5;padding:3px 0;font-size:11.6px}
+.drill em{font-style:normal;font-size:11px;font-weight:700;color:#068b76}
+.drill code{font-size:11.4px;color:#3a2fbf;background:rgba(91,75,255,.07);padding:0 4px;border-radius:4px}
+.terms{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:11px;background:#fff;margin:10px 0;overflow:hidden;break-inside:avoid}
+.terms div{padding:8px 11px;border-left:1px solid var(--line)}
+.terms div:first-child{border-left:0}
+.terms b{display:block;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--brand);margin-bottom:1px}
+.terms span{font-size:11.2px;color:var(--muted);line-height:1.45}
+.snippet{margin:6px 0 0;padding:7px 9px;background:#0f1729;border-radius:7px;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.6px;line-height:1.62;color:#c7d4e8;white-space:pre;overflow:auto}
+
+/* ---------- misc ---------- */
+.sec-title{font-size:18.5px;margin:24px 0 3px;padding-top:4px}
+.sec-sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;font-size:12px}
+.kv dt{font-weight:700;color:var(--ink)}
+.kv dd{margin:0;color:#4a5470}
+hr.soft{border:0;border-top:1px solid var(--line);margin:22px 0}
+.endcard{
+  margin-top:18px;border-radius:16px;padding:16px 20px;color:#dfe9ff;break-inside:avoid;
+  background:radial-gradient(600px 220px at 100% 0%,rgba(0,194,168,.25),transparent 60%),#0b1222;
+}
+.endcard h3{color:#fff;font-size:17px}
+.endcard p{color:#9fadc9;font-size:12px;margin-top:5px}
+.endcard .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.endcard .links a{font-size:11px;color:#bcd2ff;border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:4px 9px;background:rgba(255,255,255,.04)}
+.foot-note{margin-top:34px;text-align:center;font-size:10.5px;color:#98a1b8}
+
+/* ---------- motion ---------- */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.step-head.reveal{transition-delay:.02s}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+  *{animation:none!important;transition:none!important}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;height:auto;flex-direction:row;align-items:center;gap:14px;overflow:auto;padding:12px 16px}
+  .rail nav{flex-direction:row}
+  .rail-foot{display:none}
+  .main{padding:22px 18px 50px}
+  .cover h1{font-size:40px}
+  .toc-grid,.grid-2,.grid-3,.ex-grid{grid-template-columns:1fr}
+  .howto{grid-template-columns:repeat(2,1fr)}
+  .pg-grid{grid-template-columns:1fr}
+}
+
+/* ---------- print ---------- */
+@media print{
+  body{background:#fff;font-size:11.6px;line-height:1.6}
+  .shell{display:block;max-width:none}
+  .rail{display:none!important}
+  .main{padding:0}
+  .paper{max-width:none}
+  .cover{border-radius:14px;padding:36px 36px 30px;box-shadow:none;min-height:930px}
+  .cover h1{font-size:62px}
+  .cover .lede{font-size:13.5px}
+  .cover-term{margin-top:30px}
+  .cover-term pre{font-size:12px}
+  .cover h1 .grad{
+    background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+    color:#8ff0d9!important;-webkit-text-fill-color:#8ff0d9!important;
+  }
+
+  .toc{padding-top:22px}
+  .toc-grid a{box-shadow:none}
+  .step{break-before:page;padding-top:2px}
+  .step:first-of-type{break-before:auto}
+  .toc{break-after:page}
+  .cover{break-after:page}
+  .prog i{width:var(--p)!important}
+  .reveal{opacity:1!important;transform:none!important}
+  .copy,.runbtn{display:none!important}
+  figure.code,.term,.card,.note,.ex,.playground,.chal>div,.toc-grid a{break-inside:avoid}
+  figure.code{box-shadow:none}
+  .term{box-shadow:none}
+  a{color:inherit;text-decoration:none}
+  .endcard{box-shadow:none}
+  .foot-note{margin-top:18px}
+}
+
+/* ================= Day 2 additions ================= */
+.pill.day2pill{background:rgba(255,107,53,.16);border-color:rgba(255,122,89,.42);color:#ffc7b3}
+.cover.day2{
+  background:
+    radial-gradient(900px 420px at 88% -12%,rgba(255,107,53,.30),transparent 62%),
+    radial-gradient(700px 420px at 4% 110%,rgba(31,107,243,.5),transparent 60%),
+    #0a1020;
+}
+.cover.day2 h1 .grad{
+  background:linear-gradient(96deg,#8fb9ff,#ff9a6b 62%,#ffd7a8);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+@media print{
+  .cover.day2 h1 .grad{
+    background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+    color:#ffb894!important;-webkit-text-fill-color:#ffb894!important;
+  }
+}
+.badge-day{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;letter-spacing:.16em;
+  text-transform:uppercase;color:#ff9a6b;background:rgba(255,107,53,.1);border:1px solid rgba(255,122,89,.3);
+  border-radius:999px;padding:4px 9px;margin-bottom:8px}
+
+/* preview / phone mock */
+.preview{display:grid;grid-template-columns:252px minmax(0,1fr);gap:22px;align-items:center;margin:14px 0;break-inside:avoid}
+.preview.top{align-items:start}
+.preview-side h4{font-size:13.5px;margin-bottom:4px}
+.preview-side p{font-size:12.4px;color:#4a5470;line-height:1.6}
+.preview-side .note{margin:8px 0 0}
+.preview-side .run{margin:8px 0 0}
+
+.phone{width:236px;border-radius:34px;background:#0b1220;padding:8px;position:relative;
+  box-shadow:0 26px 50px -26px rgba(12,18,40,.6),inset 0 0 0 1px rgba(255,255,255,.05)}
+.phone::after{content:"";position:absolute;left:50%;top:13px;transform:translateX(-50%);width:62px;height:5px;border-radius:99px;background:#1c2740;z-index:3}
+.ph-screen{border-radius:26px;overflow:hidden;background:#fff;height:392px;display:flex;flex-direction:column;position:relative}
+.ph-status{height:26px;background:inherit;color:#111;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:8.5px;font-weight:800;letter-spacing:.04em;flex:none}
+.ph-status.dark{color:#fff}
+.ph-appbar{height:48px;flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;background:#ff5722;letter-spacing:.01em;box-shadow:0 3px 8px -4px rgba(0,0,0,.35)}
+.ph-appbar.light{background:#f7f8fb;color:#14181f;border-bottom:1px solid #e6e9f2;box-shadow:none}
+.ph-appbar.blue{background:#2196f3}
+.ph-appbar.blueAccent{background:#448aff}
+.ph-appbar.green{background:#43a047}
+.ph-body{flex:1;display:flex;align-items:center;justify-content:center;background:#fff;position:relative;padding:14px;overflow:hidden}
+.ph-body.dark{background:#000}
+.ph-body.top{justify-content:flex-start;flex-direction:column;gap:13px;padding-top:26px}
+.ph-fab{position:absolute;right:14px;bottom:16px;background:#ff5722;color:#fff;border-radius:16px;padding:11px 14px;font-size:9.5px;font-weight:800;box-shadow:0 10px 18px -8px rgba(255,87,34,.85)}
+.ph-txt{font-size:13px;color:#14181f;font-weight:600}
+.ph-txt.hero{font-size:23px;font-weight:800;letter-spacing:-.02em}
+.ph-logo{width:158px;height:44px;border-radius:9px;display:grid;place-items:center;font-size:8.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#71809f;
+  background:linear-gradient(135deg,#f2f6fd,#dfe7f5);border:1px dashed #c8d4e8}
+.ph-plane{font-size:52px;line-height:1;filter:drop-shadow(0 6px 8px rgba(0,0,0,.12))}
+.ph-box{width:122px;height:64px;background:#2196f3;color:#fff;display:grid;place-items:center;font-size:10.5px;font-weight:700;border-radius:2px}
+.ph-row{display:flex;align-items:center;gap:10px}
+.ph-icon{color:#2196f3;font-size:22px;line-height:1}
+.ph-label{font-size:15px;font-weight:800;color:#14181f;letter-spacing:-.01em}
+.ph-card{width:100%;background:#4caf50;border-radius:7px;padding:9px 11px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 6px 10px -6px rgba(0,0,0,.45);color:#fff;font-size:12.5px;font-weight:700}
+.ph-card .em{font-size:20px;line-height:1}
+.ph-col{display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:flex-start;width:100%;padding-top:6px}
+.ph-btn{background:#2196f3;color:#fff;border:0;border-radius:4px;padding:9px 16px;font:700 9.5px "Segoe UI",sans-serif;letter-spacing:.04em;cursor:pointer;
+  box-shadow:0 4px 10px -4px rgba(33,150,243,.85);transition:transform .15s,box-shadow .15s}
+.ph-btn:hover{transform:translateY(-1px);box-shadow:0 7px 14px -5px rgba(33,150,243,.9)}
+.ph-btn:disabled{background:#8fc7f5;cursor:default;transform:none;box-shadow:none}
+.ph-caption{text-align:center;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#98a1b8;font-weight:700;margin-top:6px}
+
+/* comparison */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
+.cmp .card h4{display:flex;align-items:center;gap:6px}
+.cmp .card h4 .dot{width:7px;height:7px;border-radius:99px}
+.cmp .no{color:#b93a3a}.cmp .yes{color:#068b76}
+
+/* two files side by side */
+.files{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.files figure.code{margin:0}
+@media (max-width:760px){.files{grid-template-columns:1fr}}
+
+/* yaml block */
+.yamlish{color:#e6edf3}
+.yamlish .key{color:#82aaff}
+.yamlish .val{color:#c3e88d}
+
+/* step flow chips */
+.flow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:12px 0;font-size:11px}
+.flow span{background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 9px;color:#3c4560;font-weight:600}
+.flow i{color:#a9b2c7;font-style:normal}
+
+@media (max-width:1000px){
+  .preview{grid-template-columns:1fr}
+  .preview .phone{margin:0 auto}
+  .cmp{grid-template-columns:1fr}
+}
+@media print{
+  .preview{grid-template-columns:252px 1fr}
+  .phone{box-shadow:none}
+  .ph-btn{display:none}
+}
+/* code that needs wrapping (yaml / urls) */
+figure.code.wrap code{white-space:pre-wrap;overflow-wrap:anywhere}
+
+/* interactive Subscribe demo */
+.ph-body .ph-txt{text-align:center}
+.demo-reset{display:block;margin:7px auto 0;background:none;border:0;padding:2px 6px;font:700 10px "Segoe UI",sans-serif;
+  letter-spacing:.14em;text-transform:uppercase;color:#8b94ab;cursor:pointer;border-radius:6px}
+.demo-reset:hover{color:#1f6bf3;background:rgba(31,107,243,.07)}
+.demo-log{margin:10px 0 12px;background:#0b1220;border:1px solid #1c2740;border-radius:9px;padding:8px 10px;
+  color:#7f92b0;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.5px;line-height:1.6;min-height:32px;white-space:pre-wrap}
+.demo-log .ok{color:#7ee2c4}
+.demo-log .cmd{color:#bcd2ff}
+.preview-side table{font-size:10.8px;margin-top:4px}
+.preview-side table td,.preview-side table th{padding:4px 8px}
+
+/* AppBar titles that are not centred (Android default) */
+.ph-appbar.left{justify-content:flex-start;padding-left:16px}
+.ph-card{color:#0b1020}
+
+/* ================= Day 3 additions ================= */
+.pill.day3pill{background:rgba(0,194,168,.14);border-color:rgba(0,194,168,.42);color:#9ff2e4}
+.cover.day3{
+  background:
+    radial-gradient(880px 420px at 90% -10%,rgba(0,194,168,.34),transparent 62%),
+    radial-gradient(720px 420px at 2% 112%,rgba(124,92,255,.42),transparent 60%),
+    #071018;
+}
+.cover.day3 h1 .grad{
+  background:linear-gradient(96deg,#8ff3e4,#ffd166 58%,#ffb4a2);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+@media print{
+  .cover.day3 h1 .grad{
+    background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+    color:#8ff3e4!important;-webkit-text-fill-color:#8ff3e4!important;
+  }
+}
+
+.ph-appbar.teal{background:#009688}
+.ph-appbar .ph-dots{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:15px;font-weight:800}
+.ph-appbar .ph-burger{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:800;
+  background:none;border:0;padding:2px;cursor:pointer;color:inherit;line-height:1}
+
+.ph-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#4db6ac,#00695c);color:#fff;
+  display:grid;place-items:center;font-weight:800;font-size:15px;letter-spacing:.02em;flex:none}
+.ph-av.sm{width:38px;height:38px;font-size:11px}
+.ph-av.lg{width:96px;height:96px;font-size:26px}
+.ph-line-lg{font-size:10.5px;font-weight:800;color:#14181f;letter-spacing:-.01em}
+.ph-line{font-size:8.4px;color:#6b7591}
+
+.ph-b{display:inline-flex;align-items:center;justify-content:center;font:700 8.2px "Segoe UI",sans-serif;
+  border-radius:4px;padding:6px 9px;border:1px solid transparent;letter-spacing:.02em;white-space:nowrap}
+.ph-b.fill{background:#009688;color:#fff}
+.ph-b.out{border-color:#009688;color:#009688;background:#fff}
+.ph-b.txt{color:#009688;background:transparent;padding-left:4px;padding-right:4px}
+.ph-b.icon{background:transparent;color:#2e7d32;font-size:11px;padding:4px 5px}
+.ph-btnrow{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}
+
+.ph-drop{width:100%;border-bottom:1px solid #b9c2d4;padding:5px 2px;display:flex;align-items:center;
+  justify-content:space-between;font-size:8.6px;color:#14181f;background:#fff}
+.ph-drop .car{color:#7b849c;font-size:8px}
+
+.ph-doc{width:100%;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e6e9f2;
+  border-radius:7px;padding:7px 8px;box-shadow:0 4px 10px -9px rgba(0,0,0,.4)}
+.ph-doc .av{width:26px;height:26px;border-radius:50%;flex:none;background:linear-gradient(135deg,#b2dfdb,#009688);
+  color:#fff;display:grid;place-items:center;font-size:8.5px;font-weight:800}
+.ph-doc .meta{flex:1;min-width:0;line-height:1.35}
+.ph-doc .nm{font-size:8.8px;font-weight:800;color:#14181f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph-doc .sp{font-size:7.2px;color:#7b849c}
+.ph-doc .ch{font-size:8px;color:#b6bfd0;flex:none}
+
+.ph-tabs{height:33px;flex:none;display:flex;background:#fff;border-bottom:1px solid #e6e9f2}
+.ph-tabs button{flex:1;background:none;border:0;position:relative;font:700 8.6px "Segoe UI",sans-serif;
+  color:#6b7591;cursor:pointer;padding:0}
+.ph-tabs button.on{color:#009688}
+.ph-tabs button.on::after{content:"";position:absolute;left:22%;right:22%;bottom:0;height:2px;border-radius:2px;background:#009688}
+
+.ph-bn{height:50px;flex:none;display:flex;background:#fff;border-top:1px solid #e6e9f2;box-shadow:0 -4px 12px -12px rgba(0,0,0,.4)}
+.ph-bn button{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;font:600 7.4px "Segoe UI",sans-serif;color:#8590a8;cursor:pointer;padding:0}
+.ph-bn button.on{color:#009688}
+.ph-bn .ic{font-size:14px;line-height:1}
+
+.ph-panel{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  padding:12px;background:#fff;min-height:0;overflow:hidden;width:100%}
+.ph-panel.on{display:flex}
+.ph-panel.top{justify-content:flex-start;padding-top:12px;gap:6px}
+
+.ph-scrim{position:absolute;inset:0;background:rgba(6,12,24,.45);z-index:4;opacity:0;pointer-events:none;transition:opacity .22s}
+.ph-scrim.open{opacity:1;pointer-events:auto}
+.ph-drawer{position:absolute;left:0;top:0;bottom:0;width:78%;background:#fff;z-index:5;display:flex;flex-direction:column;
+  transform:translateX(-102%);transition:transform .26s cubic-bezier(.2,.8,.2,1);box-shadow:12px 0 30px -18px rgba(0,0,0,.6)}
+.ph-drawer.open{transform:none}
+.ph-dhead{background:#009688;color:#fff;padding:14px 12px 11px;display:flex;flex-direction:column;gap:1px}
+.ph-dav{width:36px;height:36px;border-radius:50%;background:#fff;color:#009688;display:grid;place-items:center;
+  font-size:15px;margin-bottom:4px}
+.ph-dhead .nm{font-size:9.5px;font-weight:800}
+.ph-dhead .em{font-size:7.5px;opacity:.85}
+.ph-ditem{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:8.8px;color:#39425c;font-weight:600}
+.ph-ditem .ic{font-size:11px;color:#7b849c;width:14px;text-align:center}
+
+.ph-table{width:100%;border-collapse:collapse;background:#fff;border-radius:6px;overflow:hidden;
+  box-shadow:0 5px 14px -10px rgba(0,0,0,.45);font-size:7.1px}
+.ph-table th{background:#e0f2f1;color:#00695c;text-align:left;padding:5px 4px;font-size:6.8px;letter-spacing:.02em}
+.ph-table td{padding:5px 4px;border-top:1px solid #eef1f7;color:#39425c}
+
+.ph-web{width:100%;height:100%;display:flex;flex-direction:column;background:#fff}
+.ph-webbar{height:20px;flex:none;background:#eef1f8;display:flex;align-items:center;gap:3px;padding:0 7px;
+  font-size:6.6px;color:#6b7591}
+.ph-webhead{background:#0b6fb8;color:#fff;padding:9px 8px;font-size:10px;font-weight:800;letter-spacing:-.01em}
+.ph-weblines{padding:9px 8px;display:flex;flex-direction:column;gap:5px}
+.ph-weblines i{display:block;height:4px;border-radius:2px;background:#e3e8f3}
+.ph-weblines i.w70{width:70%}
+.ph-weblines i.w90{width:90%}
+.ph-weblines i.w50{width:50%}
+.ph-weblines i.hd{height:7px;background:#cfd8e8;width:45%}
+
+.ph-snack{position:absolute;left:8px;right:8px;bottom:10px;background:#323232;color:#fff;border-radius:4px;
+  padding:7px 8px;font-size:7.2px;line-height:1.4;box-shadow:0 10px 20px -10px rgba(0,0,0,.7);z-index:3}
+
+.ph-select{background:#b3e5fc;color:#14181f;font-size:9px;padding:1px 2px;border-radius:2px}
+
+.ph-avwrap{position:relative;width:112px;height:112px}
+.ph-avwrap .big{width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#8bc34a,#2e7d32);
+  display:grid;place-items:center;color:#fff;font-weight:800;font-size:26px;letter-spacing:.02em}
+.ph-online{position:absolute;right:7px;bottom:7px;width:18px;height:18px;border-radius:50%;
+  background:#43a047;border:2.5px solid #fff}
+
+.phones2{display:flex;gap:16px;justify-content:center;align-items:flex-start;flex-wrap:wrap;margin:12px 0 4px}
+.phones2 .phonecell{display:flex;flex-direction:column;align-items:center}
+.phones2 .phonecell .ph-caption{margin-top:6px}
+
+@media (max-width:1000px){
+  .phones2{gap:10px}
+}
+@media print{
+  .ph-bn button,.ph-tabs button{pointer-events:none}
+  .phones2{break-inside:avoid}
+}
+
+/* long inline code must not widen a table on narrow screens */
+@media (max-width:760px){
+  .paper table{table-layout:fixed}
+  .paper td,.paper th{overflow-wrap:anywhere}
+  .paper td code,.paper th code{overflow-wrap:anywhere}
+}
+/* inline code must never widen a paragraph or note */
+.paper :not(pre) > code{overflow-wrap:anywhere}
+/* long widget names must not widen the step header on very narrow screens */
+.step-head > div{min-width:0}
+.step-head h2{overflow-wrap:break-word}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-brand"><span class="logo">◆</span> Day 3 Lab</div>
+    <nav id="railnav">
+      <a href="#setup"><span>00</span> The health app</a>
+      <a href="#step-1"><span>01</span> Buttons</a>
+      <a href="#step-2"><span>02</span> Navigation</a>
+      <a href="#step-3"><span>03</span> Data both ways</a>
+      <a href="#step-4"><span>04</span> Hero</a>
+      <a href="#step-5"><span>05</span> WebView</a>
+      <a href="#step-6"><span>06</span> Bottom nav</a>
+      <a href="#step-7"><span>07</span> TabBar</a>
+      <a href="#step-8"><span>08</span> ListView</a>
+      <a href="#step-9"><span>09</span> Drawer</a>
+      <a href="#step-10"><span>10</span> DataTable</a>
+      <a href="#step-11"><span>11</span> SelectableText</a>
+      <a href="#step-12"><span>12</span> Stack</a>
+      <a href="#challenges"><span>13</span> Challenges</a>
+      <a href="#cheatsheet"><span>14</span> Cheat sheet</a>
+    </nav>
+    <div class="rail-foot">Flutter Gurugram<br>2026 · Flutter Foundations</div>
+  </aside>
+
+  <main class="main">
+    <div class="paper">
+
+      <!-- ================= COVER ================= -->
+      <header class="cover day3" id="top">
+        <div class="cover-inner">
+          <div class="cover-top">
+            <span class="pill">Flutter Gurugram · 2026</span>
+            <span class="pill day3pill">Lab · Day 03</span>
+          </div>
+          <h1>Health App<br><span class="grad">In Motion</span></h1>
+          <p class="lede">One clinic app, twelve features. Wire up every button type, push and pop between screens, carry data both ways, fly a Hero across the route, embed a web page, then organise it all with tabs, lists, a drawer, a table and a stack.</p>
+          <div class="cover-tags">
+            <span>12 steps</span><span>10 Dart files</span><span>~2.5 hours</span><span>Android emulator</span>
+          </div>
+          <div class="cover-term">
+            <div class="term-bar"><i></i><i></i><i></i><span>zsh — flutter run</span></div>
+            <pre><span class="dim">$</span> flutter run
+Launching lib/main.dart on sdk gphone64 arm64…
+Running Gradle task 'assembleDebug'... <span class="s">12.4s</span>
+<span class="s">✓</span> Built build/app/outputs/flutter-apk/app-debug.apk
+Syncing files to device… <span class="s">1,842ms</span><span class="caret"></span></pre>
+          </div>
+          <div class="cover-foot">Tap it · Push it · Pop it · Ship it</div>
+        </div>
+      </header>
+
+      <!-- ================= TOC ================= -->
+      <section class="toc">
+        <h2 class="eyebrow">What's inside</h2>
+        <h2>Your route through Day 3</h2>
+        <div class="toc-grid">
+          <a href="#setup"><b>00</b><span>The health app</span><em>Files, packages, plan</em></a>
+          <a href="#step-1"><b>01</b><span>Buttons</span><em>Elevated, outlined, text, menus</em></a>
+          <a href="#step-2"><b>02</b><span>Navigation</span><em>push, pop, routes</em></a>
+          <a href="#step-3"><b>03</b><span>Data both ways</span><em>Arguments and results</em></a>
+          <a href="#step-4"><b>04</b><span>Hero</span><em>Animate across screens</em></a>
+          <a href="#step-5"><b>05</b><span>WebView</span><em>webview_flutter</em></a>
+          <a href="#step-6"><b>06</b><span>Bottom navigation</span><em>IndexedStack and tabs</em></a>
+          <a href="#step-7"><b>07</b><span>TabBar</span><em>DefaultTabController</em></a>
+          <a href="#step-8"><b>08</b><span>ListView</span><em>ListTile and doctor data</em></a>
+          <a href="#step-9"><b>09</b><span>Drawer</span><em>Side menu and header</em></a>
+          <a href="#step-10"><b>10</b><span>DataTable</span><em>Rows, columns, reports</em></a>
+          <a href="#step-11"><b>11</b><span>SelectableText</span><em>Copy from the screen</em></a>
+          <a href="#step-12"><b>12</b><span>Stack</span><em>Overlay an online badge</em></a>
+          <a href="#challenges"><b>13</b><span>Challenges</span><em>Extend the app</em></a>
+          <a href="#cheatsheet"><b>14</b><span>Cheat sheet</span><em>Widgets and errors</em></a>
+        </div>
+        <div class="howto">
+          <div><b>Step 1</b>Run each version before adding the next feature.</div>
+          <div><b>Step 2</b>Read the preview, then compare it with your emulator.</div>
+          <div><b>Step 3</b>Tap every button — no dead UI.</div>
+          <div><b>Step 4</b>Finish with the challenges at the end.</div>
+        </div>
+      </section>
+
+      <!-- ================= SETUP ================= -->
+      <section class="step" id="setup">
+        <div class="step-head reveal">
+          <span class="step-no">00</span>
+          <div>
+            <h2>One app, built feature by feature</h2>
+            <p class="step-sub">Today's project is a small health app. Every step adds one screen or one widget to the same codebase.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:7%"></i></div>
+
+        <div class="grid-3">
+          <div class="card">
+            <span class="num">Build</span>
+            <h4>Health App</h4>
+            <p>Doctor profile, booking flow, web view, three tabs, a drawer and a lab report — all in one runnable project.</p>
+          </div>
+          <div class="card">
+            <span class="num">Files</span>
+            <h4>Ten Dart files</h4>
+            <p>Screens live in their own files under <code>lib/</code>. <code>main.dart</code> only decides which screen starts.</p>
+          </div>
+          <div class="card">
+            <span class="num">Package</span>
+            <h4>webview_flutter</h4>
+            <p>The only new dependency. It is added in Step 05, so Steps 01–04 run on a plain Flutter project.</p>
+          </div>
+        </div>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>Which project?</b><p>Continue with the project from Day 2. Starting fresh is fine too — run <code>flutter create health_app</code> and add the files below. Every <code>package:</code> import in this lab uses the project name from <code>pubspec.yaml</code>; the examples assume <code>flutternewnov2025london</code>. If yours is different, replace that one segment.</p></div>
+        </div>
+
+        <table>
+          <tr><th style="width:34%">File</th><th>Role</th></tr>
+          <tr><td><code>main.dart</code></td><td>Entry point. Launches <code>MyButtonDemo</code>, then <code>HealthApp</code>, then <code>HealthHome</code>.</td></tr>
+          <tr><td><code>MyButtonDemo.dart</code></td><td>Doctor card with every button type, a popup menu and a dropdown.</td></tr>
+          <tr><td><code>HomeScreen.dart</code></td><td>Landing tab: booking button, Hero, result SnackBar.</td></tr>
+          <tr><td><code>AppointmentScreen.dart</code></td><td>Second route: shows the doctor, returns a result.</td></tr>
+          <tr><td><code>MyWebviewDemo.dart</code></td><td>Embedded website with a <code>WebViewController</code>.</td></tr>
+          <tr><td><code>HealthApp.dart</code></td><td>Shell with a <code>BottomNavigationBar</code> and an <code>IndexedStack</code>.</td></tr>
+          <tr><td><code>HealthHome.dart</code></td><td>Shell with a <code>TabBar</code>, plus the drawer in later steps.</td></tr>
+          <tr><td><code>DoctorScreen.dart</code></td><td>Doctor list built with <code>ListView</code> and <code>ListTile</code>.</td></tr>
+          <tr><td><code>ProfileScreen.dart</code></td><td>Avatar with an online badge, built with <code>Stack</code>.</td></tr>
+          <tr><td><code>ReportScreen.dart</code></td><td>Lab results in a <code>DataTable</code>.</td></tr>
+        </table>
+
+        <div class="out-tag">Terminal — confirm the toolchain from Day 2</div>
+        <div class="term" data-sim>
+          <div class="term-bar"><i></i><i></i><i></i><span>zsh — project root</span><button class="runbtn" type="button">▶ Run</button></div>
+<pre class="term-body"><span class="ln cmd">flutter doctor</span><span class="ln ok">[✓] Flutter (Channel stable, 3.x.x, on macOS 14.x arm64)</span><span class="ln ok">[✓] Android toolchain - develop for Android devices</span><span class="ln ok">[✓] Connected device (1 available)</span><span class="ln cmd">flutter devices</span><span class="ln">sdk gphone64 arm64 (mobile) • emulator-5554 • android-arm64</span><span class="ln"><span class="cursor"></span></span></pre>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>Keep the emulator running</b><p>Every step assumes a device is attached. If <code>flutter run</code> asks you to choose one, press the number next to the Android emulator. Hot reload (<kbd>r</kbd>) will carry you through most edits.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 1 ================= -->
+      <section class="step" id="step-1">
+        <div class="step-head reveal">
+          <span class="step-no">01</span>
+          <div>
+            <h2>Every button, one screen</h2>
+            <p class="step-sub">A doctor card that exercises the whole Material button family: elevated, outlined, text, icon, popup menu and dropdown.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:14%"></i></div>
+
+        <p>Start with a screen that has something to press. The card holds an avatar, a name and a time, then two groups of actions. The app bar carries an overflow menu and the body ends with a doctor picker driven by <code>setState()</code>.</p>
+
+        <figure class="code wrap">
+          <figcaption><span class="file">lib/MyButtonDemo.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class MyButtonDemo extends StatefulWidget {
+  const MyButtonDemo({super.key});
+
+  @override
+  State&lt;MyButtonDemo&gt; createState() =&gt; _MyButtonDemoState();
+}
+
+class _MyButtonDemoState extends State&lt;MyButtonDemo&gt; {
+  String _selectedDoctor = "General Physician";
+  List&lt;String&gt; _doctors = [
+    "General Physician",
+    "Dentist",
+    "Cardiologist",
+    "Dermatologist",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Dashboard"),
+        backgroundColor: Colors.teal,
+        actions: [
+          PopupMenuButton(
+            onSelected: (String selectedOption) {
+              if (selectedOption == "Profile") {
+                // navigate to profile screen
+              }
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(child: Text("View Profile"), value: "Profile"),
+                PopupMenuItem(
+                  child: Text("Reschedule Appointment"),
+                  value: "Reschedule",
+                ),
+                PopupMenuItem(
+                  child: Text("Cancel Appointment"),
+                  value: "Cancel",
+                ),
+              ];
+            },
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: NetworkImage(
+                  "https://randomuser.me/api/portraits/men/88.jpg",
+                ),
+              ),
+              Column(
+                children: [
+                  Text(
+                    "Dr. Peter Parker",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text("Cardiologist"),
+                  Text(
+                    "Today 4:00 PM",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  ElevatedButton(onPressed: () {}, child: Text("Book")),
+                  OutlinedButton(onPressed: () {}, child: Text("Details")),
+                ],
+              ),
+              SizedBox(height: 20),
+              ButtonBar(
+                children: [
+                  ElevatedButton(onPressed: () {}, child: Text("Pay Fees")),
+                  TextButton(onPressed: () {}, child: Text("Cancel")),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.call, color: Colors.green),
+                  ),
+                ],
+              ),
+              Text(
+                "Select Doctor: $_selectedDoctor",
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(height: 20),
+              DropdownButton(
+                value: _selectedDoctor,
+                items: _doctors
+                    .map((doctor) =&gt; DropdownMenuItem(
+                          value: doctor,
+                          child: Text(doctor),
+                        ))
+                    .toList(),
+                onChanged: (String? value) {
+                  setState(() {
+                    _selectedDoctor = value!;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Colors.teal,
+        onPressed: () {},
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="run"><span class="run-label">Launch it</span><code>main.dart → home: MyButtonDemo()</code></div>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/main.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/MyButtonDemo.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyButtonDemo(),
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal" style="position:relative">Dashboard<span class="ph-dots">⋮</span></div>
+                <div class="ph-body" style="flex-direction:column;gap:6px;justify-content:flex-start;padding:14px 18px">
+                  <div class="ph-av">PP</div>
+                  <div style="text-align:center;line-height:1.5">
+                    <div class="ph-line-lg">Dr. Peter Parker</div>
+                    <div class="ph-line">Cardiologist</div>
+                    <div class="ph-line" style="color:#9aa3b8">Today 4:00 PM</div>
+                  </div>
+                  <div class="ph-btnrow"><span class="ph-b fill">Book</span><span class="ph-b out">Details</span></div>
+                  <div class="ph-btnrow" style="margin-top:4px"><span class="ph-b fill">Pay Fees</span><span class="ph-b txt">Cancel</span><span class="ph-b icon">✆</span></div>
+                  <div class="ph-line" style="font-size:8px;margin-top:6px">Select Doctor: General Physician</div>
+                  <div class="ph-drop"><span>General Physician</span><span class="car">▾</span></div>
+                  <div class="ph-fab" style="background:#009688;box-shadow:0 10px 18px -8px rgba(0,150,136,.85)">+</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">MyButtonDemo</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Six ways to tap</h4>
+            <p><b>Book</b> and <b>Pay Fees</b> are elevated buttons — the primary action. <b>Details</b> is outlined, for a secondary choice. <b>Cancel</b> is a text button, the quietest option. The phone icon is an <code>IconButton</code>, and the three dots open a <code>PopupMenuButton</code>.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Nested Padding</b><p>The body has two <code>Padding</code> widgets of 16, so the content is inset by 32 on every side. It is redundant, but harmless — remove one and the card moves closer to the edges.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <tr><th style="width:30%">Widget</th><th>Use it for</th></tr>
+          <tr><td><code>ElevatedButton</code></td><td>The main action on a screen. Filled surface with a shadow.</td></tr>
+          <tr><td><code>OutlinedButton</code></td><td>An alternative action of similar weight, without the fill.</td></tr>
+          <tr><td><code>TextButton</code></td><td>Low-emphasis actions: cancel, skip, learn more.</td></tr>
+          <tr><td><code>IconButton</code></td><td>A single icon with a tap target. Always give it a tooltip or label in real apps.</td></tr>
+          <tr><td><code>FloatingActionButton</code></td><td>One prominent, screen-level action pinned above the content.</td></tr>
+          <tr><td><code>PopupMenuButton</code></td><td>Overflow actions in the app bar. <code>value</code> is returned to <code>onSelected</code>.</td></tr>
+          <tr><td><code>DropdownButton</code></td><td>Pick one value from a list. The current value is stored in state.</td></tr>
+        </table>
+
+        <div class="grid-2">
+          <div class="note tip" style="margin:0">
+            <span class="ico">▶</span>
+            <div><b>Try it</b><p>Open the menu and choose <b>View Profile</b> — nothing happens yet because the <code>if</code> body is empty. That is the hook for the challenge. Then change the dropdown to <b>Dentist</b> and watch the label update.</p></div>
+          </div>
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b>Why <code>value!</code>?</b><p><code>onChanged</code> receives a nullable <code>String?</code>, but the dropdown can never select <code>null</code> with this setup. The <code>!</code> asserts that. If you later allow a null entry, remove the <code>!</code> and handle the null case.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 2 ================= -->
+      <section class="step" id="step-2">
+        <div class="step-head reveal">
+          <span class="step-no">02</span>
+          <div>
+            <h2>Navigation: push and pop</h2>
+            <p class="step-sub">Two screens, one stack. <code>Navigator.push</code> puts a route on top; <code>Navigator.pop</code> takes it off.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:21%"></i></div>
+
+        <p>Split the UI into a home screen and an appointment screen. Each has its own <code>Scaffold</code> and <code>AppBar</code>; the back arrow appears automatically on the second one.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/AppointmentScreen.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Health App'),
+        backgroundColor: Colors.teal,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (content) =&gt; AppointmentScreen()),
+            );
+          },
+          child: Text("Book Appointment"),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/AppointmentScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class AppointmentScreen extends StatelessWidget {
+  const AppointmentScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Appointment"),
+        backgroundColor: Colors.teal,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context); // move to previous screen
+          },
+          child: Text("Go Back"),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/main.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/HomeScreen.dart';
+
+void main() {
+  // Bind the widget tree to the screen with runApp().
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <div class="phones2">
+          <div class="phonecell">
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal left">Health App</div>
+                <div class="ph-body"><span class="ph-b fill" style="padding:9px 14px;font-size:9px">Book Appointment</span></div>
+              </div>
+            </div>
+            <div class="ph-caption">1 · HomeScreen</div>
+          </div>
+          <div class="phonecell">
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal left" style="gap:6px"><span style="font-size:15px">←</span> Appointment</div>
+                <div class="ph-body"><span class="ph-b fill" style="padding:9px 18px;font-size:9px">Go Back</span></div>
+              </div>
+            </div>
+            <div class="ph-caption">2 · AppointmentScreen</div>
+          </div>
+        </div>
+
+        <span class="out-tag">What happens</span>
+        <h4 style="margin-bottom:4px">The navigator is a stack of routes</h4>
+        <p><code>MaterialPageRoute</code> builds the new screen and slides it in. The old screen stays alive underneath, which is why <b>Go Back</b> returns instantly. <code>Navigator.pop(context)</code> removes the top route; the system back gesture does exactly the same thing.</p>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>Names in the builder</b><p><code>builder: (content) =&gt; AppointmentScreen()</code> — the parameter name <code>content</code> is arbitrary. Most code calls it <code>context</code>, but it shadows the outer one, so avoid that habit.</p></div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Tap <b>Book Appointment</b>, then use the emulator's back gesture instead of <b>Go Back</b>. Same result: one route pops. Then push the appointment screen twice and press back twice — count the stack.</p></div>
+        </div>
+      </section>
+      <!-- ================= STEP 3 ================= -->
+      <section class="step" id="step-3">
+        <div class="step-head reveal">
+          <span class="step-no">03</span>
+          <div>
+            <h2>Passing data both ways</h2>
+            <p class="step-sub">Send a doctor into the next screen, then send a result back to the screen that opened it.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:29%"></i></div>
+
+        <p>Arguments go in through the constructor. A result comes back through <code>Navigator.pop(context, value)</code>, which resolves the <code>Future</code> returned by <code>Navigator.push</code>.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/AppointmentScreen.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Health App'),
+        backgroundColor: Colors.teal,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            var result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (content) =&gt; AppointmentScreen(doctor: "Dr.Smith"),
+              ),
+            );
+            if (result != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(result.toString())),
+              );
+            }
+          },
+          child: Text("Book Appointment with Dr.Smith"),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/AppointmentScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class AppointmentScreen extends StatelessWidget {
+  String doctor;
+  AppointmentScreen({super.key, required this.doctor}); // initialize doctor
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Appointment"),
+        backgroundColor: Colors.teal,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Booking appointment with $doctor",
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, "Appointment confirmed with $doctor");
+              },
+              child: Text("Confirm Appointment"),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context, "Appointment cancelled");
+              },
+              child: Text("Cancel"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="phones2">
+          <div class="phonecell">
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal left">Health App</div>
+                <div class="ph-body">
+                  <span class="ph-b fill" style="padding:9px 12px;font-size:8.4px;max-width:170px;text-align:center;white-space:normal;line-height:1.3">Book Appointment with Dr.Smith</span>
+                  <div class="ph-snack">Appointment confirmed with Dr.Smith</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">1 · result arrives</div>
+          </div>
+          <div class="phonecell">
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal left" style="gap:6px"><span style="font-size:15px">←</span> Appointment</div>
+                <div class="ph-body" style="flex-direction:column;gap:10px">
+                  <div class="ph-line" style="font-size:9.5px;text-align:center;color:#14181f">Booking appointment with <b>Dr.Smith</b></div>
+                  <div class="ph-btnrow" style="flex-direction:column;gap:6px">
+                    <span class="ph-b fill" style="padding:7px 10px">Confirm Appointment</span>
+                    <span class="ph-b out" style="padding:7px 10px">Cancel</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">2 · pop with a value</div>
+          </div>
+        </div>
+
+        <table>
+          <tr><th style="width:38%">Line</th><th>Meaning</th></tr>
+          <tr><td><code>AppointmentScreen(doctor: "Dr.Smith")</code></td><td>Passes an argument into the new screen through its constructor.</td></tr>
+          <tr><td><code>await Navigator.push(...)</code></td><td>Waits for that route to be popped, then gives you its result.</td></tr>
+          <tr><td><code>Navigator.pop(context, value)</code></td><td>Closes the route and completes the <code>Future</code> with <code>value</code>.</td></tr>
+          <tr><td><code>if (result != null)</code></td><td>The system back button returns <code>null</code>, so only show feedback for a real choice.</td></tr>
+        </table>
+
+        <div class="grid-2">
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b>Why not <code>const</code>?</b><p><code>AppointmentScreen</code> has a non-final field (<code>doctor</code>), so its constructor cannot be <code>const</code>. Making the field <code>final</code> would allow a const constructor and is the better habit.</p></div>
+          </div>
+          <div class="note tip" style="margin:0">
+            <span class="ico">▶</span>
+            <div><b>Try it</b><p>Press <b>Cancel</b> and read the SnackBar. Then use the system back gesture instead — no SnackBar, because the result is <code>null</code>. That difference is the whole null check.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 4 ================= -->
+      <section class="step" id="step-4">
+        <div class="step-head reveal">
+          <span class="step-no">04</span>
+          <div>
+            <h2>Hero: animate a widget across routes</h2>
+            <p class="step-sub">Give the same tag to two widgets on two screens and Flutter flies one into the other.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:36%"></i></div>
+
+        <p>The home screen gets a small avatar; the appointment screen gets a large one. Both are wrapped in <code>Hero</code> with the tag <code>"doctorPic"</code>. When the route changes, Flutter matches the tags and animates position and size.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart — body</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">body: Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Hero(
+        tag: "doctorPic",
+        child: CircleAvatar(
+          radius: 40,
+          backgroundColor: Colors.teal,
+          child: Text(
+            "S",
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(height: 20),
+      ElevatedButton(
+        onPressed: () async {
+          var result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (content) =&gt; AppointmentScreen(doctor: "Dr.Smith"),
+            ),
+          );
+          if (result != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(result.toString())),
+            );
+          }
+        },
+        child: Text("Book Appointment with Dr.Smith"),
+      ),
+    ],
+  ),
+),</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/AppointmentScreen.dart — body</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">body: Center(
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Hero(
+        tag: "doctorPic",
+        child: CircleAvatar(
+          radius: 60,
+          backgroundColor: Colors.teal,
+          child: Text(
+            "S",
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(height: 20),
+      Text(
+        "Booking appointment with $doctor",
+        style: TextStyle(fontSize: 18),
+      ),
+      SizedBox(height: 20),
+      ElevatedButton(
+        onPressed: () {
+          Navigator.pop(context, "Appointment confirmed with $doctor");
+        },
+        child: Text("Confirm Appointment"),
+      ),
+      OutlinedButton(
+        onPressed: () {
+          Navigator.pop(context, "Appointment cancelled");
+        },
+        child: Text("Cancel"),
+      ),
+    ],
+  ),
+),</code></pre>
+        </figure>
+
+        <div class="phones2">
+          <div class="phonecell">
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal left">Health App</div>
+                <div class="ph-body" style="flex-direction:column;gap:12px">
+                  <div class="ph-av" style="width:64px;height:64px;font-size:20px">S</div>
+                  <span class="ph-b fill" style="padding:8px 10px;font-size:8px;max-width:168px;white-space:normal;text-align:center;line-height:1.3">Book Appointment with Dr.Smith</span>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">radius 40 · tag “doctorPic”</div>
+          </div>
+          <div class="phonecell">
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal left" style="gap:6px"><span style="font-size:15px">←</span> Appointment</div>
+                <div class="ph-body" style="flex-direction:column;gap:9px">
+                  <div class="ph-av" style="width:96px;height:96px;font-size:30px">S</div>
+                  <div class="ph-line" style="font-size:9px;text-align:center;color:#14181f">Booking appointment with <b>Dr.Smith</b></div>
+                  <div class="ph-btnrow" style="flex-direction:column;gap:5px">
+                    <span class="ph-b fill" style="padding:6px 9px">Confirm Appointment</span>
+                    <span class="ph-b out" style="padding:6px 9px">Cancel</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">radius 60 · same tag</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b>Tags must match — and be unique</b><p>Two heroes with the same tag on one screen is an error. The tag only has to be unique <i>per screen</i>, because Flutter matches the outgoing and incoming trees.</p></div>
+          </div>
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b>Needs a MaterialApp</b><p>The flight is drawn by the navigator, so <code>Hero</code> only animates inside a <code>MaterialApp</code> (or <code>CupertinoApp</code>). On a bare <code>runApp(Center(...))</code> it has nowhere to fly.</p></div>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Tap <b>Book Appointment</b> and watch the avatar grow as the new screen slides in. Then change the second radius to <code>120</code> — the flight still works, it just ends bigger.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 5 ================= -->
+      <section class="step" id="step-5">
+        <div class="step-head reveal">
+          <span class="step-no">05</span>
+          <div>
+            <h2>WebView: a website inside the app</h2>
+            <p class="step-sub">Add the plugin, raise the Android compile SDK, and embed a real page with <code>WebViewWidget</code>.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:43%"></i></div>
+
+        <div class="flow"><span>flutter pub add webview_flutter</span><i>→</i><span>compileSdk 34</span><i>→</i><span>WebViewController</span><i>→</i><span>stop &amp; start</span></div>
+
+        <div class="out-tag">Terminal — add the package</div>
+        <div class="term" data-sim>
+          <div class="term-bar"><i></i><i></i><i></i><span>zsh — project root</span><button class="runbtn" type="button">▶ Run</button></div>
+<pre class="term-body"><span class="ln cmd">flutter pub add webview_flutter</span><span class="ln dim">Resolving dependencies...</span><span class="ln ok">+ webview_flutter 4.x.x</span><span class="ln dim">Changed 4 dependencies!</span><span class="ln"><span class="cursor"></span></span></pre>
+        </div>
+
+        <p>The Android build needs a recent compile SDK. Open the app-level Gradle file and set it to 34.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">android/app/build.gradle</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="groovy">android {
+    compileSdkVersion 34
+    // ...the rest of the android block stays the same
+}</code></pre>
+        </figure>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>Kotlin DSL projects</b><p>Newer Flutter templates use <code>android/app/build.gradle.kts</code>. There the line is <code>compileSdk = 34</code> inside the <code>android { }</code> block. Change the file your project actually has.</p></div>
+        </div>
+
+        <figure class="code wrap">
+          <figcaption><span class="file">lib/MyWebviewDemo.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+class MyWebviewDemo extends StatelessWidget {
+  const MyWebviewDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Health App Website")),
+      body: WebViewWidget(
+        controller: WebViewController()
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+          ..loadRequest(Uri.parse("https://www.healthline.com/")),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/AppointmentScreen.dart';
+import 'package:flutternewnov2025london/MyWebviewDemo.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Health App'),
+        backgroundColor: Colors.teal,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Hero(
+              tag: "doctorPic",
+              child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.teal,
+                child: Text(
+                  "S",
+                  style: TextStyle(fontSize: 30, color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                var result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (content) =>
+                        AppointmentScreen(doctor: "Dr.Smith"),
+                  ),
+                );
+                if (result != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(result.toString())),
+                  );
+                }
+              },
+              child: Text("Book Appointment with Dr.Smith"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyWebviewDemo()),
+                );
+              },
+              child: Text("Open Website"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar light left">Health App Website</div>
+                <div class="ph-body" style="padding:0;align-items:stretch">
+                  <div class="ph-web">
+                    <div class="ph-webbar"><span>🔒</span><span>www.healthline.com</span></div>
+                    <div class="ph-webhead">Healthline</div>
+                    <div class="ph-weblines">
+                      <i class="hd"></i><i class="w90"></i><i class="w70"></i><i class="w50"></i><i class="w90"></i><i class="w70"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">WebViewWidget</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>The controller is the browser</h4>
+            <p><code>WebViewController</code> owns the page. The cascade (<code>..</code>) configures it: JavaScript on, then a URL loaded. <code>WebViewWidget</code> is just the view that renders whatever the controller is showing.</p>
+            <div class="note warn">
+              <span class="ico">!</span>
+              <div><b>Rebuilds create a new controller</b><p>This controller is built inside <code>build()</code>, so any rebuild reloads the page. In a real app, create it once in a <code>StatefulWidget</code>'s <code>initState()</code> and reuse it.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>Stop and start the app</b><p>Adding a plugin changes the native build. Hot reload cannot pick it up: press <kbd>q</kbd>, then run <code>flutter run</code> again. If the page stays blank, check the emulator's internet connection and that <code>compileSdkVersion</code> is 34 or higher.</p></div>
+        </div>
+      </section>
+      <!-- ================= STEP 6 ================= -->
+      <section class="step" id="step-6">
+        <div class="step-head reveal">
+          <span class="step-no">06</span>
+          <div>
+            <h2>BottomNavigationBar: three screens, one shell</h2>
+            <p class="step-sub">Put Home, Doctors and Profile behind a persistent bottom bar — and keep each tab's state with <code>IndexedStack</code>.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:50%"></i></div>
+
+        <p>The shell owns the <code>Scaffold</code>, the app bar and the navigation. The three tab screens become plain widgets with no <code>Scaffold</code> of their own.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HealthApp.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/DoctorScreen.dart';
+import 'package:flutternewnov2025london/HomeScreen.dart';
+import 'package:flutternewnov2025london/ProfileScreen.dart';
+
+class HealthApp extends StatefulWidget {
+  const HealthApp({super.key});
+
+  @override
+  State&lt;HealthApp&gt; createState() =&gt; _HealthAppState();
+}
+
+class _HealthAppState extends State&lt;HealthApp&gt; {
+  int _currentIndex = 0;
+  String? _appointment;
+  List&lt;String&gt; doctors = ["Dr. John Smith", "Dr. Sarah Lee", "Dr. Amit Rao"];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Health App", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.teal,
+      ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          HomeScreen(appointment: _appointment),
+          DoctorScreen(doctors: doctors),
+          ProfileScreen(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_hospital),
+            label: "Doctors",
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class HomeScreen extends StatelessWidget {
+  String? appointment;
+  HomeScreen({super.key, required this.appointment});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        appointment == null ? "No appointment booked yet" : "$appointment",
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="files">
+          <figure class="code">
+            <figcaption><span class="file">lib/DoctorScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class DoctorScreen extends StatelessWidget {
+  List&lt;String&gt; doctors;
+  DoctorScreen({super.key, required this.doctors});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: doctors
+          .map((doctor) =&gt; Card(
+                child: ListTile(
+                  title: Text(doctor),
+                  subtitle: Text("Specialist"),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                ),
+              ))
+          .toList(),
+    );
+  }
+}</code></pre>
+          </figure>
+
+          <figure class="code">
+            <figcaption><span class="file">lib/ProfileScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.person, size: 80, color: Colors.teal),
+          SizedBox(height: 10),
+          Text(
+            "User Profile",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          ),
+          SizedBox(height: 5),
+          Text("Name: Alex", style: TextStyle(fontSize: 18)),
+          Text("Age: 28", style: TextStyle(fontSize: 18)),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+          </figure>
+        </div>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/main.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/HealthApp.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HealthApp(),
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar teal">Health App</div>
+                <div class="ph-body" style="padding:0">
+                  <div class="ph-panel on" data-panel="home">
+                    <div class="ph-line" style="font-size:9px;font-weight:700;color:#14181f;text-align:center">No appointment booked yet</div>
+                  </div>
+                  <div class="ph-panel top" data-panel="doctors">
+                    <div class="ph-doc"><span class="av">JS</span><div class="meta"><div class="nm">Dr. John Smith</div><div class="sp">Specialist</div></div><span class="ch">›</span></div>
+                    <div class="ph-doc"><span class="av">SL</span><div class="meta"><div class="nm">Dr. Sarah Lee</div><div class="sp">Specialist</div></div><span class="ch">›</span></div>
+                    <div class="ph-doc"><span class="av">AR</span><div class="meta"><div class="nm">Dr. Amit Rao</div><div class="sp">Specialist</div></div><span class="ch">›</span></div>
+                  </div>
+                  <div class="ph-panel" data-panel="profile">
+                    <div style="font-size:34px;line-height:1;color:#009688">👤</div>
+                    <div class="ph-line-lg">User Profile</div>
+                    <div class="ph-line">Name: Alex · Age: 28</div>
+                  </div>
+                </div>
+                <div class="ph-bn" data-nav>
+                  <button type="button" class="on" data-panel="home"><span class="ic">⌂</span>Home</button>
+                  <button type="button" data-panel="doctors"><span class="ic">＋</span>Doctors</button>
+                  <button type="button" data-panel="profile"><span class="ic">●</span>Profile</button>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Live demo — switch tabs</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>One Scaffold, three bodies</h4>
+            <p><code>_currentIndex</code> decides which child of <code>IndexedStack</code> is visible. Tapping an item calls <code>setState</code>, and the bar highlights the new index. Because all three children stay mounted, a tab keeps its scroll position and state while you switch away.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Why no Scaffold inside?</b><p><code>HomeScreen</code>, <code>DoctorScreen</code> and <code>ProfileScreen</code> sit <i>inside</i> the shell's body. A second <code>Scaffold</code> would add a second app bar and break the layout.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b><code>IndexedStack</code> vs <code>body: children[index]</code></b><p>Swapping the child rebuilds it and loses its state. <code>IndexedStack</code> keeps every child alive and paints only the selected one — the standard choice for bottom navigation.</p></div>
+          </div>
+          <div class="note tip" style="margin:0">
+            <span class="ico">▶</span>
+            <div><b>Try it</b><p>Change the app bar colour to <code>Colors.indigo</code>. Then replace <code>_currentIndex</code> with a literal <code>1</code> — the bar and the body disagree, which shows why both read the same field.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 7 ================= -->
+      <section class="step" id="step-7">
+        <div class="step-head reveal">
+          <span class="step-no">07</span>
+          <div>
+            <h2>TabBar: swipe between screens</h2>
+            <p class="step-sub">Move the switcher into the app bar. <code>DefaultTabController</code> wires <code>TabBar</code> to <code>TabBarView</code> without any state of your own.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:57%"></i></div>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HealthHome.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/DoctorScreen.dart';
+import 'package:flutternewnov2025london/HomeScreen.dart';
+import 'package:flutternewnov2025london/ProfileScreen.dart';
+
+class HealthHome extends StatefulWidget {
+  const HealthHome({super.key});
+
+  @override
+  State&lt;HealthHome&gt; createState() =&gt; _HealthHomeState();
+}
+
+class _HealthHomeState extends State&lt;HealthHome&gt; {
+  List&lt;Map&lt;String, dynamic&gt;&gt; _tabs = [
+    {"title": "Home", "icon": Icons.home},
+    {"title": "Doctors", "icon": Icons.local_hospital},
+    {"title": "Profile", "icon": Icons.person},
+  ];
+  String? _appointment;
+  List&lt;String&gt; doctors = ["Dr. John Smith", "Dr. Sarah Lee", "Dr. Amit Rao"];
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Health App"),
+          centerTitle: true,
+          bottom: TabBar(
+            tabs: _tabs
+                .map((tab) =&gt; Tab(
+                      text: tab["title"],
+                    ))
+                .toList(),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            HomeScreen(appointment: _appointment),
+            DoctorScreen(doctors: doctors),
+            ProfileScreen(),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/main.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:flutternewnov2025london/HealthHome.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HealthHome(),
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar light">Health App</div>
+                <div class="ph-tabs" data-nav>
+                  <button type="button" class="on" data-panel="home">Home</button>
+                  <button type="button" data-panel="doctors">Doctors</button>
+                  <button type="button" data-panel="profile">Profile</button>
+                </div>
+                <div class="ph-body" style="padding:0">
+                  <div class="ph-panel on" data-panel="home">
+                    <div class="ph-line" style="font-size:9px;font-weight:700;color:#14181f;text-align:center">No appointment booked yet</div>
+                  </div>
+                  <div class="ph-panel top" data-panel="doctors">
+                    <div class="ph-doc"><span class="av">JS</span><div class="meta"><div class="nm">Dr. John Smith</div><div class="sp">Specialist</div></div><span class="ch">›</span></div>
+                    <div class="ph-doc"><span class="av">SL</span><div class="meta"><div class="nm">Dr. Sarah Lee</div><div class="sp">Specialist</div></div><span class="ch">›</span></div>
+                    <div class="ph-doc"><span class="av">AR</span><div class="meta"><div class="nm">Dr. Amit Rao</div><div class="sp">Specialist</div></div><span class="ch">›</span></div>
+                  </div>
+                  <div class="ph-panel" data-panel="profile">
+                    <div style="font-size:34px;line-height:1;color:#009688">👤</div>
+                    <div class="ph-line-lg">User Profile</div>
+                    <div class="ph-line">Name: Alex · Age: 28</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Live demo — tap or swipe</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>The controller does the bookkeeping</h4>
+            <p><code>DefaultTabController(length: 3)</code> creates a controller above the <code>Scaffold</code>. <code>TabBar</code> reads it for the indicator, <code>TabBarView</code> reads it for the page index. Tap a tab or swipe the body — both stay in sync.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Keep the lengths equal</b><p><code>length</code>, the number of <code>Tab</code> widgets and the number of <code>TabBarView</code> children must all match. A mismatch throws at runtime.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmp">
+          <div class="card">
+            <h4><span class="dot" style="background:#009688"></span>BottomNavigationBar</h4>
+            <p class="yes">Lives at the bottom, one destination per item.</p>
+            <p>Best for 3–5 top-level destinations the user switches between constantly. You manage the index yourself.</p>
+          </div>
+          <div class="card">
+            <h4><span class="dot" style="background:#7c5cff"></span>TabBar</h4>
+            <p class="yes">Lives in the app bar, swipeable body.</p>
+            <p>Best for a smaller set of related views on the same screen. <code>DefaultTabController</code> manages the index.</p>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Add a fourth map to <code>_tabs</code> and a fourth child to <code>TabBarView</code> — <b>Report</b> and <code>ReportScreen()</code>. Increase <code>length</code> too, then check that all four tabs are reachable by swipe.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 8 ================= -->
+      <section class="step" id="step-8">
+        <div class="step-head reveal">
+          <span class="step-no">08</span>
+          <div>
+            <h2>ListView and ListTile</h2>
+            <p class="step-sub">Give every doctor a name, a speciality and a photo — then make the list scroll.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:64%"></i></div>
+
+        <p>Three strings are not enough for a real list. Replace them with maps, render each one as a <code>Card</code> + <code>ListTile</code>, and swap the <code>Column</code> for a <code>ListView</code> so the list can scroll.</p>
+
+        <figure class="code wrap">
+          <figcaption><span class="file">lib/HealthHome.dart — doctor data</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">List&lt;Map&lt;String, String&gt;&gt; doctors = [
+  {
+    "name": "Dr. John Smith",
+    "speciality": "General Physician",
+    "image": "https://randomuser.me/api/portraits/thumb/men/85.jpg",
+  },
+  {
+    "name": "Dr. Sarah Lee",
+    "speciality": "Cardiologist",
+    "image": "https://randomuser.me/api/portraits/thumb/men/26.jpg",
+  },
+  {
+    "name": "Dr. Amit Rao",
+    "speciality": "Dermatologist",
+    "image": "https://randomuser.me/api/portraits/thumb/women/29.jpg",
+  },
+];</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HealthHome.dart — TabBarView child</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">body: TabBarView(
+  children: [
+    HomeScreen(appointment: _appointment),
+    DoctorScreen(doctor: doctors),
+    ProfileScreen(),
+  ],
+),</code></pre>
+        </figure>
+
+        <figure class="code wrap">
+          <figcaption><span class="file">lib/DoctorScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class DoctorScreen extends StatelessWidget {
+  List&lt;Map&lt;String, String&gt;&gt; doctor;
+  DoctorScreen({super.key, required this.doctor});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: doctor
+          .map((doctor) =&gt; Card(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(doctor['image']!),
+                  ),
+                  title: Text(doctor["name"]!),
+                  subtitle: Text(doctor["speciality"]!),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                ),
+              ))
+          .toList(),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar light">Health App</div>
+                <div class="ph-tabs">
+                  <button type="button" data-panel="home">Home</button>
+                  <button type="button" class="on" data-panel="doctors">Doctors</button>
+                  <button type="button" data-panel="profile">Profile</button>
+                </div>
+                <div class="ph-body top" style="padding:10px;gap:7px">
+                  <div class="ph-doc"><span class="av">JS</span><div class="meta"><div class="nm">Dr. John Smith</div><div class="sp">General Physician</div></div><span class="ch">›</span></div>
+                  <div class="ph-doc"><span class="av">SL</span><div class="meta"><div class="nm">Dr. Sarah Lee</div><div class="sp">Cardiologist</div></div><span class="ch">›</span></div>
+                  <div class="ph-doc"><span class="av">AR</span><div class="meta"><div class="nm">Dr. Amit Rao</div><div class="sp">Dermatologist</div></div><span class="ch">›</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Card → ListTile per doctor</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Three slots, one row</h4>
+            <p><code>ListTile</code> gives you <code>leading</code>, <code>title</code>, <code>subtitle</code> and <code>trailing</code> without any manual layout. <code>map(...).toList()</code> turns the data into a list of widgets, and <code>ListView</code> scrolls when they overflow.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Why the <code>!</code>?</b><p>A <code>Map&lt;String, String&gt;</code> lookup returns <code>String?</code> because the key might be missing. The <code>!</code> asserts that every map has the key. A missing key becomes a runtime error — keep the data shape consistent.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b>Column vs ListView</b><p>The previous screen used a <code>Column</code>, which cannot scroll. A fourth doctor would overflow the bottom of the screen. <code>ListView</code> is the scrollable replacement — and it only builds the rows that are visible.</p></div>
+          </div>
+          <div class="note tip" style="margin:0">
+            <span class="ico">▶</span>
+            <div><b>Try it</b><p>Duplicate the third map twice, hot reload, and scroll. Then remove the <code>leading</code> from <code>ListTile</code> and see the text move left. Add a <code>onTap: () {}</code> to make the row tappable.</p></div>
+          </div>
+        </div>
+      </section>
+      <!-- ================= STEP 9 ================= -->
+      <section class="step" id="step-9">
+        <div class="step-head reveal">
+          <span class="step-no">09</span>
+          <div>
+            <h2>NavigationDrawer: a menu from the side</h2>
+            <p class="step-sub">Add a <code>drawer:</code> to the <code>Scaffold</code> and Flutter gives you the hamburger icon, the slide animation and the scrim for free.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:71%"></i></div>
+
+        <p>Nothing needs to be wrapped and no state is required. A non-null <code>drawer</code> makes the app bar grow an icon; tapping it slides the panel over the body. The header is a <code>UserAccountsDrawerHeader</code>, the rows are ordinary <code>ListTile</code>s.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HealthHome.dart — AppBar</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">appBar: AppBar(
+  title: Text(
+    "Health App",
+    style: TextStyle(color: Colors.teal, fontWeight: FontWeight.bold),
+  ),
+  bottom: TabBar(
+    tabs: _tabs
+        .map((tab) =&gt; Tab(
+              text: tab["title"],
+            ))
+        .toList(),
+  ),
+),</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HealthHome.dart — Scaffold drawer</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">drawer: Drawer(
+  child: Column(
+    children: [
+      UserAccountsDrawerHeader(
+        accountName: Text("John Doe"),
+        accountEmail: Text("john@example.com"),
+        currentAccountPicture: CircleAvatar(
+          backgroundColor: Colors.white,
+          child: Icon(Icons.person, size: 40, color: Colors.teal),
+        ),
+      ),
+      ListTile(
+        leading: Icon(Icons.home),
+        title: Text("Home"),
+        onTap: () {},
+      ),
+      ListTile(
+        leading: Icon(Icons.local_hospital),
+        title: Text("Doctors"),
+      ),
+      ListTile(
+        leading: Icon(Icons.article),
+        title: Text("Articles"),
+      ),
+      ListTile(
+        leading: Icon(Icons.person),
+        title: Text("Profile"),
+      ),
+      ListTile(
+        leading: Icon(Icons.settings),
+        title: Text("Settings"),
+      ),
+    ],
+  ),
+),</code></pre>
+        </figure>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>Where does the button come from?</b><p><code>Scaffold</code> checks whether <code>drawer</code> is set and, if so, inserts a leading <code>IconButton</code> that calls <code>openDrawer()</code>. Adding a <code>leading:</code> of your own replaces it; call <code>Scaffold.of(context).openDrawer()</code> to keep the behaviour.</p></div>
+        </div>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar light" style="position:relative;color:#009688">
+                  <button class="ph-burger" type="button" id="drawer-btn" aria-label="Open drawer">☰</button>
+                  Health App
+                </div>
+                <div class="ph-tabs">
+                  <button type="button" class="on">Home</button>
+                  <button type="button">Doctors</button>
+                  <button type="button">Profile</button>
+                </div>
+                <div class="ph-body">
+                  <div class="ph-line" style="font-size:9px;font-weight:700;color:#14181f;text-align:center">No appointment booked yet</div>
+                </div>
+                <div class="ph-scrim" id="drawer-scrim"></div>
+                <div class="ph-drawer" id="drawer">
+                  <div class="ph-dhead">
+                    <div class="ph-dav">👤</div>
+                    <div class="nm">John Doe</div>
+                    <div class="em">john@example.com</div>
+                  </div>
+                  <div class="ph-ditem"><span class="ic">⌂</span>Home</div>
+                  <div class="ph-ditem"><span class="ic">＋</span>Doctors</div>
+                  <div class="ph-ditem"><span class="ic">▤</span>Articles</div>
+                  <div class="ph-ditem"><span class="ic">●</span>Profile</div>
+                  <div class="ph-ditem"><span class="ic">⚙</span>Settings</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Live demo — tap ☰</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Overlay, not a new route</h4>
+            <p>The drawer is painted on top of the current screen — the tab controller keeps its index underneath. Swipe from the left edge, tap the hamburger, or tap the scrim to close. The first <code>ListTile</code> has an empty <code>onTap</code>, so it does nothing yet.</p>
+            <div class="note tip">
+              <span class="ico">▶</span>
+              <div><b>Close it in code</b><p>Inside a drawer item call <code>Navigator.pop(context)</code> to dismiss the drawer before switching tabs. A drawer is a route, so <code>pop</code> is the correct close.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b>No height on the Column?</b><p><code>Drawer</code> gives its child a bounded height, so a plain <code>Column</code> works. If you add many items, swap it for <code>ListView</code> — otherwise the bottom rows overflow on small screens.</p></div>
+          </div>
+          <div class="note tip" style="margin:0">
+            <span class="ico">▶</span>
+            <div><b>Try it</b><p>Give <b>Doctors</b> an <code>onTap</code> that closes the drawer and jumps to the second tab. The clean way is a <code>TabController</code> field instead of <code>DefaultTabController</code>.</p></div>
+          </div>
+        </div>
+      </section>
+      <!-- ================= STEP 10 ================= -->
+      <section class="step" id="step-10">
+        <div class="step-head reveal">
+          <span class="step-no">10</span>
+          <div>
+            <h2>DataTable: rows and columns</h2>
+            <p class="step-sub">A fourth tab holds the lab report. <code>DataTable</code> lays out columns for you — no <code>Row</code> inside <code>Row</code> required.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:79%"></i></div>
+
+        <p>Growing from three tabs to four is three small edits: add a map to <code>_tabs</code>, add a child to <code>TabBarView</code>, and create the new screen. The <code>DefaultTabController</code> picks up the new length from <code>_tabs.length</code>.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HealthHome.dart — add the tab</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">List&lt;Map&lt;String, dynamic&gt;&gt; _tabs = [
+  {"title": "Home", "icon": Icons.home},
+  {"title": "Doctors", "icon": Icons.local_hospital},
+  {"title": "Profile", "icon": Icons.person},
+  {"title": "Report", "icon": Icons.article},
+];</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HealthHome.dart — add the page</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">body: TabBarView(
+  children: [
+    HomeScreen(appointment: _appointment),
+    DoctorScreen(doctor: doctors),
+    ProfileScreen(),
+    ReportScreen(),
+  ],
+),</code></pre>
+        </figure>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>One import to add</b><p>At the top of <code>HealthHome.dart</code>, import the new screen: <code>import 'package:flutternewnov2025london/ReportScreen.dart';</code>. Without it the compiler cannot resolve <code>ReportScreen()</code>.</p></div>
+        </div>
+
+        <figure class="code wrap">
+          <figcaption><span class="file">lib/ReportScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class ReportScreen extends StatelessWidget {
+  const ReportScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(16),
+      child: DataTable(
+        columns: [
+          DataColumn(label: Text("Test")),
+          DataColumn(label: Text("Result")),
+          DataColumn(label: Text("Range")),
+        ],
+        rows: [
+          DataRow(cells: [
+            DataCell(Text("Blood Pressure")),
+            DataCell(Text("120/80")),
+            DataCell(Text("90/60 - 120/80")),
+          ]),
+          DataRow(cells: [
+            DataCell(Text("Heart Rate")),
+            DataCell(Text("72 BPM")),
+            DataCell(Text("60 - 100 BPM")),
+          ]),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar light">Health App</div>
+                <div class="ph-tabs">
+                  <button type="button">Home</button>
+                  <button type="button">Doctors</button>
+                  <button type="button">Profile</button>
+                  <button type="button" class="on">Report</button>
+                </div>
+                <div class="ph-body top" style="padding:10px">
+                  <table class="ph-table">
+                    <thead>
+                      <tr><th>Test</th><th>Result</th><th>Range</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Blood Pressure</td><td>120/80</td><td>90/60 - 120/80</td></tr>
+                      <tr><td>Heart Rate</td><td>72 BPM</td><td>60 - 100 BPM</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Fourth tab · ReportScreen</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Columns first, then rows</h4>
+            <p>Every <code>DataColumn</code> is a header; every <code>DataRow</code> must supply one <code>DataCell</code> per column, in the same order. The table measures its columns and aligns the text, which is why the numbers line up without any manual padding.</p>
+            <div class="note warn">
+              <span class="ico">!</span>
+              <div><b>Three columns is the safe limit</b><p><code>DataTable</code> does not scroll sideways on its own. If a cell is wide or the phone is narrow you get the yellow-and-black overflow stripe. Wrap the table in <code>SingleChildScrollView(scrollDirection: Axis.horizontal)</code>.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/ReportScreen.dart — scrollable variant</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">child: SingleChildScrollView(
+  scrollDirection: Axis.horizontal,
+  child: DataTable(
+    // columns and rows stay exactly the same
+  ),
+),</code></pre>
+        </figure>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Add a third <code>DataRow</code> for cholesterol, then a fourth column for <b>Status</b>. When the row stops fitting, add the scroll wrapper above and confirm the stripe disappears.</p></div>
+        </div>
+      </section>
+      <!-- ================= STEP 11 ================= -->
+      <section class="step" id="step-11">
+        <div class="step-head reveal">
+          <span class="step-no">11</span>
+          <div>
+            <h2>SelectableText: let the user copy</h2>
+            <p class="step-sub">One word changes the behaviour: <code>Text</code> becomes <code>SelectableText</code> and long-press starts a selection.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:86%"></i></div>
+
+        <p>Appointment details are exactly the kind of thing people copy into a message. Replacing the home text is a one-line swap — the parameters <code>style</code> and <code>textAlign</code> are the same as <code>Text</code>.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart — body</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">return Center(
+  child: SelectableText(
+    appointment == null ? "No appointment booked yet" : "$appointment",
+    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    textAlign: TextAlign.center,
+  ),
+);</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar light">Health App</div>
+                <div class="ph-tabs">
+                  <button type="button" class="on">Home</button>
+                  <button type="button">Doctors</button>
+                  <button type="button">Profile</button>
+                </div>
+                <div class="ph-body" style="flex-direction:column;gap:8px">
+                  <div class="ph-line" style="font-size:9.5px;font-weight:800;color:#14181f;text-align:center">
+                    Appointment confirmed<br>with <span class="ph-select">Dr.Smith</span>
+                  </div>
+                  <div class="ph-line" style="font-size:7.4px;color:#9aa3b8">Long-press to select · copy</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">SelectableText — blue selection</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Selection handles appear</h4>
+            <p>A long-press selects the word under your finger and shows the native drag handles and the <b>Copy</b> toolbar. Tap elsewhere to clear it. Nothing else on the screen changes: same size, same weight, same alignment.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>When to use it</b><p>Read-only text the user may want to reuse: booking references, addresses, codes, phone numbers. Do not use it for buttons or labels — a tap would start a selection instead of the action.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>It is not a text field</b><p><code>SelectableText</code> cannot be edited. If the user needs to change the value, that is <code>TextField</code> (or <code>TextFormField</code>) with a <code>controller</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 12 ================= -->
+      <section class="step" id="step-12">
+        <div class="step-head reveal">
+          <span class="step-no">12</span>
+          <div>
+            <h2>Stack: put the badge on the avatar</h2>
+            <p class="step-sub">Layer a small green dot over a big circle. <code>Stack</code> overlays children, <code>Positioned</code> pins one to a corner.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:92%"></i></div>
+
+        <p>The profile tab finally gets a real avatar. The photo is the first child of the <code>Stack</code> and defines its size; the online dot is the second child, pinned with <code>Positioned</code> and given a white border so it reads as a cut-out.</p>
+
+        <figure class="code wrap">
+          <figcaption><span class="file">lib/ProfileScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Stack(
+        children: [
+          CircleAvatar(
+            radius: 80,
+            backgroundImage: NetworkImage(
+              "https://randomuser.me/api/portraits/thumb/men/85.jpg",
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar light">Health App</div>
+                <div class="ph-tabs">
+                  <button type="button">Home</button>
+                  <button type="button">Doctors</button>
+                  <button type="button" class="on">Profile</button>
+                </div>
+                <div class="ph-body">
+                  <div class="ph-avwrap">
+                    <div class="big">JS</div>
+                    <div class="ph-online"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Avatar + online dot</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Later children paint on top</h4>
+            <p>The <code>Stack</code> sizes itself to the largest non-positioned child — the 160 px avatar. <code>Positioned(bottom: 10, right: 10)</code> then places the 20 px dot relative to the avatar's box, so it always sits in the lower-right corner.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Why the white border?</b><p><code>Border.all(color: Colors.white, width: 2)</code> separates the green dot from the photo, the same trick messaging apps use. Without it the dot disappears into a dark image.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b><code>Positioned</code> needs a <code>Stack</code></b><p>Using <code>Positioned</code> anywhere else throws <i>Incorrect use of ParentDataWidget</i>. It is only valid as a direct child of <code>Stack</code> (or <code>IndexedStack</code> in some cases).</p></div>
+          </div>
+          <div class="note tip" style="margin:0">
+            <span class="ico">▶</span>
+            <div><b>Try it</b><p>Change <code>bottom: 10</code> to <code>top: 0, left: 0</code> and watch the dot jump to the top-left. Then add a third child — a <code>Text</code> inside a <code>Positioned</code> at the centre — to label the photo.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CHALLENGES ================= -->
+      <section class="step" id="challenges">
+        <div class="step-head reveal">
+          <span class="step-no">13</span>
+          <div>
+            <h2>Challenges</h2>
+            <p class="step-sub">Six extensions that reuse today's widgets. None of them needs a new package.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:96%"></i></div>
+
+        <div class="chal">
+          <div class="ch">
+            <h4><span>01 · MENUS</span> Make the overflow menu work</h4>
+            <p>In <code>MyButtonDemo</code>, handle all three items. <b>View Profile</b> pushes <code>ProfileScreen</code>; the other two show a <code>SnackBar</code> naming the action.</p>
+            <div class="hint"><b>Hint</b> The switch happens in <code>onSelected</code>. Push with <code>Navigator.push</code>; show feedback with <code>ScaffoldMessenger.of(context)</code>.</div>
+          </div>
+          <div class="ch">
+            <h4><span>02 · STATE</span> Show the booked appointment on Home</h4>
+            <p>Lift the appointment string into <code>HealthApp</code> (or <code>HealthHome</code>), pass it to <code>HomeScreen</code>, and update it when the booking screen returns a result.</p>
+            <div class="hint"><b>Hint</b> The result arrives from the awaited <code>Navigator.push</code> in <code>onPressed</code>. Call <code>setState</code> there — the shell is the stateful widget, not <code>HomeScreen</code>.</div>
+          </div>
+          <div class="ch">
+            <h4><span>03 · HERO</span> Fly the real photo</h4>
+            <p>Replace the <code>"S"</code> initials with the same <code>NetworkImage</code> on both screens. Keep one <code>CircleAvatar</code> at radius 40 and the other at 60, both inside <code>Hero(tag: "doctorPic")</code>.</p>
+            <div class="hint"><b>Hint</b> Both tags must match exactly. If the image flickers mid-flight, check that both use the same URL so it is already in the cache.</div>
+          </div>
+          <div class="ch">
+            <h4><span>04 · WEBVIEW</span> A loading bar</h4>
+            <p>Show a <code>LinearProgressIndicator</code> while the page loads. Hide it once loading finishes. Reach for <code>NavigationDelegate</code> and set state.</p>
+            <div class="hint"><b>Hint</b> <code>onPageStarted</code> → true, <code>onPageFinished</code> → false. Move the controller into <code>initState()</code> so a rebuild does not reload the page.</div>
+          </div>
+          <div class="ch">
+            <h4><span>05 · DRAWER</span> Menu items that switch tabs</h4>
+            <p>Make <b>Doctors</b> in the drawer jump to the Doctors tab, and <b>Profile</b> to Profile. Close the drawer first.</p>
+            <div class="hint"><b>Hint</b> <code>DefaultTabController</code> hides its controller. Replace it with a <code>TabController</code> field created in <code>initState</code>, then call <code>_controller.animateTo(index)</code>.</div>
+          </div>
+          <div class="ch">
+            <h4><span>06 · STACK</span> A status that changes</h4>
+            <p>Turn the online dot into a status indicator: green for available, amber for busy. Tapping the avatar toggles it.</p>
+            <div class="hint"><b>Hint</b> <code>ProfileScreen</code> becomes stateful. Wrap the avatar in <code>GestureDetector</code> or <code>InkWell</code>, keep a <code>bool</code>, and pick the colour with a ternary.</div>
+          </div>
+        </div>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>Definition of done</b><p>All four tabs open without a red screen, the drawer closes when you pick an item, <b>Open Website</b> loads a real page, the appointment result appears in a SnackBar, and the avatar badge sits exactly on the photo. Run <code>flutter analyze</code> — no warnings, no unused imports.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= CHEAT SHEET ================= -->
+      <section class="step" id="cheatsheet">
+        <div class="step-head reveal">
+          <span class="step-no">14</span>
+          <div>
+            <h2>Cheat sheet</h2>
+            <p class="step-sub">Navigation, tabs, lists, drawers and tables — the whole day on one page.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:100%"></i></div>
+
+        <h3 class="sec-title" style="margin-top:0">Navigation and screens</h3>
+        <table>
+          <tr><th style="width:31%">Task</th><th>Syntax</th></tr>
+          <tr><td>Push a screen</td><td><code>Navigator.push(context, MaterialPageRoute(builder: (c) =&gt; Screen()))</code></td></tr>
+          <tr><td>Pass an argument</td><td><code>AppointmentScreen(doctor: "Dr.Smith")</code> + <code>required this.doctor</code></td></tr>
+          <tr><td>Pop</td><td><code>Navigator.pop(context)</code></td></tr>
+          <tr><td>Pop with a result</td><td><code>Navigator.pop(context, "confirmed")</code></td></tr>
+          <tr><td>Await the result</td><td><code>var r = await Navigator.push(...);</code></td></tr>
+          <tr><td>Feedback message</td><td><code>ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(r)))</code></td></tr>
+          <tr><td>Hero flight</td><td><code>Hero(tag: "doctorPic", child: CircleAvatar(...))</code> on both routes</td></tr>
+          <tr><td>Web page</td><td><code>WebViewWidget(controller: WebViewController()..loadRequest(Uri.parse(url)))</code></td></tr>
+          <tr><td>Bottom bar</td><td><code>BottomNavigationBar(currentIndex:, items:, onTap:)</code></td></tr>
+          <tr><td>Keep tab state</td><td><code>IndexedStack(index: _currentIndex, children: [...])</code></td></tr>
+          <tr><td>Tabs</td><td><code>DefaultTabController(length: 3, child: Scaffold(appBar: AppBar(bottom: TabBar(tabs: [...])), body: TabBarView(children: [...])))</code></td></tr>
+          <tr><td>Tab item</td><td><code>Tab(text: "Home")</code> or <code>Tab(icon: Icon(Icons.home))</code></td></tr>
+          <tr><td>Scrollable list</td><td><code>ListView(children: data.map((d) =&gt; Card(child: ListTile(...))).toList())</code></td></tr>
+          <tr><td>List row</td><td><code>ListTile(leading:, title:, subtitle:, trailing:, onTap:)</code></td></tr>
+          <tr><td>Side menu</td><td><code>Scaffold(drawer: Drawer(child: Column(children: [...])))</code></td></tr>
+          <tr><td>Drawer header</td><td><code>UserAccountsDrawerHeader(accountName:, accountEmail:, currentAccountPicture:)</code></td></tr>
+          <tr><td>Close the drawer</td><td><code>Navigator.pop(context)</code> inside the <code>ListTile</code>'s <code>onTap</code></td></tr>
+          <tr><td>Table</td><td><code>DataTable(columns: [DataColumn(label: Text("Test"))], rows: [DataRow(cells: [DataCell(Text("120/80"))])])</code></td></tr>
+          <tr><td>Wide table</td><td><code>SingleChildScrollView(scrollDirection: Axis.horizontal, child: DataTable(...))</code></td></tr>
+          <tr><td>Copyable text</td><td><code>SelectableText("...")</code></td></tr>
+          <tr><td>Overlay</td><td><code>Stack(children: [child, Positioned(bottom: 10, right: 10, child: dot)])</code></td></tr>
+        </table>
+
+        <h3 class="sec-title">Commands and keys</h3>
+        <table>
+          <tr><th style="width:38%">Command / key</th><th>What it does</th></tr>
+          <tr><td><code>flutter pub add webview_flutter</code></td><td>Adds the plugin to <code>pubspec.yaml</code> and installs it.</td></tr>
+          <tr><td><code>flutter pub get</code></td><td>Re-resolves dependencies after a manual edit of <code>pubspec.yaml</code>.</td></tr>
+          <tr><td><code>flutter run</code></td><td>Build and launch on the selected device.</td></tr>
+          <tr><td><kbd>r</kbd> / <kbd>R</kbd> / <kbd>q</kbd></td><td>Hot reload / hot restart / quit.</td></tr>
+          <tr><td><code>flutter analyze</code></td><td>Static checks: unused imports, dead code, null-safety mistakes.</td></tr>
+          <tr><td><code>flutter clean</code></td><td>Delete build output. Use after a Gradle or plugin change that refuses to build.</td></tr>
+          <tr><td><code>flutter doctor -v</code></td><td>Full toolchain report when a build fails for no obvious reason.</td></tr>
+        </table>
+
+        <h3 class="sec-title">Errors you will meet again</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4 style="color:#b93a3a">There are multiple heroes that share the same tag</h4>
+            <p>Two <code>Hero</code> widgets with the same <code>tag</code> are mounted on one route. Make each tag unique per screen — the pair across two routes is the only allowed duplicate.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">use_build_context_synchronously</h4>
+            <p>You used <code>context</code> after an <code>await</code>. Guard it with <code>if (!context.mounted) return;</code> before touching the navigator or a messenger.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">A RenderFlex overflowed by N pixels</h4>
+            <p>A <code>Column</code>, <code>Row</code> or <code>DataTable</code> is wider than its parent. Scroll it, wrap the flexible child in <code>Expanded</code>, or reduce the columns.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">MissingPluginException</h4>
+            <p>The native side of a plugin is not in the running build. Hot reload cannot add it: press <kbd>q</kbd> and run <code>flutter run</code> again. A <code>flutter clean</code> helps if it persists.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">The argument type 'String?' can't be assigned to 'String'</h4>
+            <p>A <code>Map</code> lookup returns a nullable value. Use <code>doctor["name"]!</code> once you are sure the key exists, or handle <code>null</code> explicitly.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">requires Android SDK 34 / compileSdkVersion</h4>
+            <p><b>webview_flutter</b> needs a recent SDK. Set <code>compileSdkVersion 34</code> in <code>android/app/build.gradle</code>, or <code>compileSdk = 34</code> in <code>build.gradle.kts</code>, then rebuild.</p>
+          </div>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>One last check</b><p>Every screen should survive a rotation and a hot restart. If a tab resets when you switch away, you are swapping the child instead of using <code>IndexedStack</code>. If the WebView reloads on every rebuild, its controller is being created inside <code>build()</code>.</p></div>
+        </div>
+
+        <div class="endcard">
+          <h3>That is Day 3.</h3>
+          <p>You built a multi-screen app: every Material button, push and pop, data in through constructors and out through results, a Hero flight, an embedded web page, a bottom bar with <code>IndexedStack</code>, tabbed navigation, a scrollable doctor list, a side drawer, a lab-report table, selectable text and a stacked online badge. Next: forms, validation and persistence.</p>
+          <div class="links">
+            <a href="https://docs.flutter.dev/ui/navigation" target="_blank">Navigation</a>
+            <a href="https://docs.flutter.dev/ui/navigation/hero-animations" target="_blank">Hero animations</a>
+            <a href="https://pub.dev/packages/webview_flutter" target="_blank">webview_flutter</a>
+            <a href="https://api.flutter.dev/flutter/material/DataTable-class.html" target="_blank">DataTable</a>
+            <a href="https://docs.flutter.dev/ui/widgets" target="_blank">Widget catalogue</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+
+(function(){
+  "use strict";
+
+  /* ---------- tiny Dart syntax highlighter ---------- */
+  var KEYWORDS = new Set(["abstract","as","assert","async","await","break","case","catch","class","const","continue","covariant","default","deferred","do","dynamic","else","enum","export","extends","extension","external","factory","false","final","finally","for","Function","get","hide","if","implements","import","in","interface","is","late","library","mixin","new","null","on","operator","part","required","rethrow","return","sealed","set","show","static","super","switch","sync","this","throw","true","try","typedef","var","void","when","while","with","yield"]);
+  var TYPES = new Set(["int","double","num","String","bool","List","Map","Set","Object","Future","Stream","Iterable","Duration","DateTime","RegExp","Exception","Iterator","Never","Record","Symbol","Type","Uri","BigInt"]);
+  function esc(s){return s.replace(/[&<>]/g,function(c){return c==="&"?"&amp;":c==="<"?"&lt;":"&gt;";});}
+  function paintString(s){
+    var e = esc(s);
+    e = e.replace(/(\$\{[^}]*\}|\$[A-Za-z_][A-Za-z0-9_]*)/g,'<span class="tok-i">$1</span>');
+    return '<span class="tok-s">'+e+'</span>';
+  }
+  var TOKEN = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_][A-Za-z0-9_]*)\b/g;
+  function highlight(src){
+    var out = "", last = 0, m;
+    TOKEN.lastIndex = 0;
+    while((m = TOKEN.exec(src))){
+      out += esc(src.slice(last, m.index));
+      if(m[1]) out += '<span class="tok-c">'+esc(m[1])+'</span>';
+      else if(m[2]) out += paintString(m[2]);
+      else if(m[3]) out += '<span class="tok-n">'+esc(m[3])+'</span>';
+      else {
+        var w = m[4], cls = "";
+        if(KEYWORDS.has(w)) cls = "tok-k";
+        else if(TYPES.has(w)) cls = "tok-t";
+        else if(/^[A-Z]/.test(w)) cls = "tok-T";
+        else if(/^[a-z][A-Za-z0-9_]*$/.test(w) && /^\s*\(/.test(src.slice(m.index + w.length))) cls = "tok-f";
+        out += cls ? '<span class="'+cls+'">'+esc(w)+'</span>' : esc(w);
+      }
+      last = m.index + m[0].length;
+    }
+    out += esc(src.slice(last));
+    return out;
+  }
+  document.querySelectorAll('code[data-lang="dart"]').forEach(function(c){
+    c.innerHTML = highlight(c.textContent);
+  });
+
+  /* ---------- copy buttons ---------- */
+  document.querySelectorAll("figure.code").forEach(function(fig){
+    var btn = fig.querySelector(".copy"), code = fig.querySelector("code");
+    if(!btn || !code) return;
+    btn.addEventListener("click", function(){
+      var text = code.textContent;
+      function done(ok){ btn.textContent = ok ? "Copied" : "Press Ctrl+C"; setTimeout(function(){ btn.textContent = "Copy"; }, 1400); }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(false); });
+      } else { done(false); }
+    });
+  });
+
+  /* ---------- terminal run simulation ---------- */
+  function playTerm(t){
+    var lines = t.querySelectorAll(".ln");
+    lines.forEach(function(l){ l.style.opacity = 0; l.style.transform = "translateY(5px)"; });
+    lines.forEach(function(l, i){
+      setTimeout(function(){
+        l.style.transition = "opacity .22s ease, transform .22s ease";
+        l.style.opacity = 1; l.style.transform = "none";
+      }, 90 * i);
+    });
+  }
+  document.querySelectorAll(".term[data-sim]").forEach(function(t){
+    var btn = t.querySelector(".runbtn");
+    if(btn) btn.addEventListener("click", function(){ playTerm(t); });
+  });
+
+  /* ---------- step reveal ---------- */
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:.1, rootMargin:"0px 0px -40px 0px"});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---------- scroll spy ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll("#railnav a"));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute("href")); }).filter(Boolean);
+  if("IntersectionObserver" in window && targets.length){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id); });
+        }
+      });
+    }, {rootMargin:"-15% 0px -70% 0px"});
+    targets.forEach(function(s){ spy.observe(s); });
+  }
+
+  /* ---------- interactive input demo ---------- */
+  var pgName = document.getElementById("pg-name");
+  var pgPrice = document.getElementById("pg-price");
+  var pgQty = document.getElementById("pg-qty");
+  var pgOut = document.getElementById("pg-out");
+  if(pgName && pgOut){
+    var update = function(){
+      var name = pgName.value.trim() || "(no name)";
+      var price = Number(pgPrice.value);
+      var qty = parseInt(pgQty.value, 10);
+      if(!isFinite(price)) price = 0;
+      if(!isFinite(qty)) qty = 0;
+      pgOut.innerHTML = '<span class="ln">You ordered <b style="color:#ffd479">' + qty + '</b> units of <b style="color:#ffd479">' + esc(name) + '</b> at <b style="color:#7ef0b0">$' + price.toFixed(2) + '</b></span>';
+    };
+    [pgName, pgPrice, pgQty].forEach(function(el){
+      el.addEventListener("input", update);
+      el.addEventListener("change", update);
+    });
+    update();
+  }
+})();
+
+</script>
+<script>
+
+(function(){
+  "use strict";
+
+  /* ---------- progress bars ----------
+     Same fix as Day 2: a bar starts at width:0, so it has zero area and
+     never reaches the base observer's .1 intersection threshold. */
+  var bars = Array.prototype.slice.call(document.querySelectorAll(".prog i.reveal"));
+  var barTick = false;
+  function checkBars(){
+    barTick = false;
+    var vh = window.innerHeight;
+    bars = bars.filter(function(el){
+      if(el.getBoundingClientRect().top < vh - 40){
+        el.classList.add("in");
+        return false;
+      }
+      return true;
+    });
+    if(!bars.length){
+      window.removeEventListener("scroll", queueBars);
+      window.removeEventListener("resize", queueBars);
+    }
+  }
+  function queueBars(){
+    if(barTick) return;
+    barTick = true;
+    window.requestAnimationFrame(checkBars);
+  }
+  window.addEventListener("scroll", queueBars, {passive:true});
+  window.addEventListener("resize", queueBars);
+  checkBars();
+
+  /* ---------- phone mocks: tab / bottom-nav switching ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-nav]"), function(nav){
+    var screen = nav.closest(".ph-screen");
+    if(!screen) return;
+
+    nav.addEventListener("click", function(e){
+      var btn = e.target.closest ? e.target.closest("button[data-panel]") : null;
+      if(!btn || !nav.contains(btn)) return;
+
+      var key = btn.getAttribute("data-panel");
+
+      Array.prototype.forEach.call(nav.querySelectorAll("button[data-panel]"), function(b){
+        b.classList.toggle("on", b === btn);
+      });
+
+      Array.prototype.forEach.call(screen.querySelectorAll(".ph-panel[data-panel]"), function(p){
+        p.classList.toggle("on", p.getAttribute("data-panel") === key);
+      });
+    });
+  });
+
+  /* ---------- phone mock: navigation drawer ---------- */
+  var drawerBtn = document.getElementById("drawer-btn");
+  var drawer = document.getElementById("drawer");
+  var scrim = document.getElementById("drawer-scrim");
+
+  function setDrawer(open){
+    if(!drawer || !scrim) return;
+    drawer.classList.toggle("open", open);
+    scrim.classList.toggle("open", open);
+    if(drawerBtn) drawerBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  if(drawerBtn){
+    drawerBtn.setAttribute("aria-expanded", "false");
+    drawerBtn.addEventListener("click", function(){
+      setDrawer(!(drawer && drawer.classList.contains("open")));
+    });
+  }
+  if(scrim){
+    scrim.addEventListener("click", function(){ setDrawer(false); });
+  }
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") setDrawer(false);
+  });
+})();
+
+</script>
+</body>
+</html>
