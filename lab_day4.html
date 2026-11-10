@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certified Flutter Application Development (Android ATC) | Forms, Maps &amp; Firebase</title>
+<style>
+:root{
+  --ink:#0b1020;
+  --body:#2b3348;
+  --muted:#6b7591;
+  --line:#e3e8f3;
+  --soft:#f5f7fc;
+  --brand:#5b4bff;
+  --brand-2:#00c2a8;
+  --accent:#ff7a59;
+  --amber:#f5a524;
+  --code-bg:#0e1526;
+  --code-ink:#e6edf3;
+  --shadow:0 18px 45px -22px rgba(17,24,64,.35);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:#eef1f8;
+  color:var(--body);
+  font-family:"Segoe UI Variable Text","Segoe UI",Inter,system-ui,-apple-system,Arial,sans-serif;
+  font-size:14px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  print-color-adjust:exact;
+  -webkit-print-color-adjust:exact;
+}
+h1,h2,h3,h4{color:var(--ink);line-height:1.18;margin:0;letter-spacing:-.02em}
+p{margin:0}
+a{color:var(--brand);text-decoration:none}
+code,pre,kbd{font-family:"Cascadia Mono","Cascadia Code",Consolas,"SF Mono",Menlo,monospace}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:236px minmax(0,1fr);gap:0;max-width:1320px;margin:0 auto}
+.rail{
+  position:sticky;top:0;height:100vh;padding:26px 20px;
+  display:flex;flex-direction:column;gap:22px;
+  border-right:1px solid rgba(255,255,255,.06);
+  background:#0c1222;color:#c9d3ea;
+}
+.rail-brand{display:flex;align-items:center;gap:10px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.rail-brand .logo{
+  width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));font-size:13px;color:#fff;
+}
+.rail nav{display:flex;flex-direction:column;gap:2px;overflow:auto}
+.rail nav a{
+  display:flex;gap:10px;align-items:baseline;
+  padding:7px 10px;border-radius:8px;color:#93a0bd;font-size:12.5px;font-weight:500;
+  transition:background .18s,color .18s,transform .18s;
+}
+.rail nav a span{font-size:10px;font-variant-numeric:tabular-nums;color:#5f6c8a;font-weight:700}
+.rail nav a:hover{background:rgba(255,255,255,.06);color:#fff;transform:translateX(2px)}
+.rail nav a.active{background:rgba(91,75,255,.18);color:#fff}
+.rail nav a.active span{color:var(--brand-2)}
+.rail-foot{margin-top:auto;font-size:11px;line-height:1.5;color:#5f6c8a;border-top:1px solid rgba(255,255,255,.08);padding-top:14px}
+.main{padding:34px 40px 70px;min-width:0}
+.paper{max-width:900px;margin:0 auto}
+
+/* ---------- cover ---------- */
+.cover{
+  position:relative;overflow:hidden;border-radius:22px;display:flex;min-height:600px;
+  background:
+    radial-gradient(900px 420px at 88% -12%,rgba(0,194,168,.28),transparent 62%),
+    radial-gradient(700px 420px at 4% 110%,rgba(91,75,255,.5),transparent 60%),
+    #0a1020;
+  color:#e8edf9;padding:38px 40px 34px;box-shadow:var(--shadow);
+}
+.cover::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:38px 38px;mask-image:radial-gradient(circle at 70% 20%,#000,transparent 75%);
+}
+.cover-inner{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;width:100%}
+.cover-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.pill{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.16);color:#dfe6f7;
+}
+.pill.ghost{background:transparent;color:#8f9cc0}
+.cover h1{font-size:56px;color:#fff;margin:26px 0 0;letter-spacing:-.035em;line-height:.98}
+.cover h1 .grad{
+  background:linear-gradient(96deg,#8f7bff,#00e0c2 62%,#7ef0ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cover .lede{margin-top:16px;max-width:590px;color:#aab6d4;font-size:14.5px;line-height:1.6}
+.cover .lede code{color:#cfe8ff;background:rgba(255,255,255,.08);padding:1px 5px;border-radius:5px;font-size:12.5px}
+.cover-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.cover-tags span{
+  font-size:11px;font-weight:600;color:#c4cee6;padding:5px 10px;border-radius:7px;
+  border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);
+}
+.cover-term{
+  margin-top:26px;background:#060b16;border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;overflow:hidden;max-width:560px;box-shadow:0 12px 30px -12px #000;
+}
+.cover-term .term-bar{background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.07)}
+.cover-term pre{margin:0;padding:14px 16px;font-size:12.5px;line-height:1.7;color:#dbe6ff}
+.cover-term .k{color:#c792ea}.cover-term .s{color:#c3e88d}.cover-term .f{color:#ffcb6b}
+.caret{display:inline-block;width:8px;height:14px;background:#7ef0ff;margin-left:3px;vertical-align:-2px;animation:blink 1.05s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.cover-foot{margin-top:40px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6d7ba0;font-weight:700}
+
+/* ---------- toc ---------- */
+.toc{padding:34px 2px 6px}
+.eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--brand)}
+.toc h2{font-size:23px;margin:6px 0 18px}
+.toc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.toc-grid a{
+  display:grid;grid-template-columns:34px 1fr;gap:2px 12px;
+  padding:11px 13px;border-radius:11px;background:#fff;border:1px solid var(--line);
+  color:var(--body);transition:transform .18s,box-shadow .18s,border-color .18s;
+}
+.toc-grid a:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfd6ea}
+.toc-grid b{grid-row:span 2;align-self:center;font-size:15px;color:var(--brand);font-variant-numeric:tabular-nums}
+.toc-grid span{font-weight:600;color:var(--ink);font-size:13px}
+.toc-grid em{font-style:normal;font-size:11.5px;color:var(--muted)}
+.howto{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}
+.howto div{background:var(--soft);border:1px dashed #ccd5ea;border-radius:10px;padding:10px 12px;font-size:11.5px;color:#4a5470}
+.howto b{display:block;color:var(--brand);font-size:10px;letter-spacing:.14em;margin-bottom:3px}
+
+/* ---------- steps ---------- */
+.step{padding-top:40px}
+.step-head{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start;margin-bottom:14px}
+.step-no{
+  width:48px;height:48px;border-radius:15px;display:grid;place-items:center;
+  font-weight:800;font-size:16px;color:#fff;letter-spacing:-.02em;
+  background:linear-gradient(140deg,#6a5bff,#4a3ae6);
+  box-shadow:0 10px 22px -10px #5b4bff;
+}
+.step:nth-of-type(odd) .step-no{background:linear-gradient(140deg,#12c9ae,#049f8a);box-shadow:0 10px 22px -10px #00c2a8}
+.step-head h2{font-size:25px;margin-top:1px}
+.step-sub{margin-top:3px;color:var(--muted);font-size:12.8px}
+.prog{height:4px;background:#e7ebf5;border-radius:99px;margin:2px 0 18px;overflow:hidden}
+.prog i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--brand),var(--brand-2));width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.prog i.in{width:var(--p)}
+
+/* ---------- code ---------- */
+figure.code{
+  margin:11px 0;background:var(--code-bg);border-radius:12px;overflow:hidden;
+  border:1px solid #182238;box-shadow:0 14px 32px -20px rgba(9,15,32,.7);
+}
+figure.code figcaption{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:8px 13px;background:#121b2e;border-bottom:1px solid #1c2740;
+  font-size:11px;color:#93a4c4;
+}
+figure.code figcaption .file{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:#c9d6ee}
+figure.code figcaption .file::before{content:"";width:7px;height:7px;border-radius:99px;background:var(--brand-2);box-shadow:0 0 0 3px rgba(0,194,168,.16)}
+.copy{
+  border:1px solid #2a3854;background:#182339;color:#9fb0cf;border-radius:6px;
+  font-size:10.5px;padding:3px 8px;cursor:pointer;font-family:inherit;transition:.18s;
+}
+.copy:hover{background:#22304c;color:#fff}
+figure.code pre{margin:0;padding:12px 15px;overflow:auto}
+figure.code code{font-size:12.4px;line-height:1.72;color:var(--code-ink);white-space:pre;display:block;tab-size:3}
+.tok-k{color:#c792ea}.tok-t{color:#82aaff}.tok-T{color:#ffcb6b}
+.tok-s{color:#c3e88d}.tok-i{color:#ff9e64}.tok-n{color:#f78c6c}
+.tok-c{color:#5d6f8f;font-style:italic}.tok-f{color:#ffcb6b}
+
+/* ---------- run chip ---------- */
+.run{display:flex;align-items:center;gap:9px;margin:10px 0 4px;flex-wrap:wrap}
+.run-label{font-size:9.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-2)}
+.run code{background:#0f1b2b;color:#bfe9ff;border:1px solid #1d3348;border-radius:7px;padding:5px 10px;font-size:12px}
+.run code::before{content:"$ ";color:#4d6b83}
+
+/* ---------- terminal ---------- */
+.term{margin:11px 0;border-radius:12px;overflow:hidden;background:#08111d;border:1px solid #1a2a3d;box-shadow:0 14px 32px -22px #000}
+.term-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#0e1a27;border-bottom:1px solid #17283a}
+.term-bar i{width:8px;height:8px;border-radius:99px;background:#2b3c50}
+.term-bar i:nth-child(1){background:#ff5f57}.term-bar i:nth-child(2){background:#febc2e}.term-bar i:nth-child(3){background:#28c840}
+.term-bar span{margin-left:6px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#6d829c;font-weight:700}
+.term-bar .runbtn{
+  margin-left:auto;border:1px solid #24405c;background:#10263b;color:#8fd8ff;border-radius:6px;
+  font:600 10.5px/1 "Segoe UI",sans-serif;padding:4px 9px;cursor:pointer;transition:.18s;
+}
+.term-bar .runbtn:hover{background:#153350;color:#fff}
+.term-body{margin:0;padding:12px 15px;font-size:12.2px;line-height:1.72;color:#d6e4f5;white-space:pre-wrap}
+.term-body .cmd{color:#5f7f9c}
+.term-body .cmd::before{content:"$ ";color:#31d6a4}
+.term-body .ok{color:#7ef0b0}
+.term-body .dim{color:#7b8fa8}
+.term-body .typed{color:#ffd479}
+.term-body .err{color:#ff8c8c}
+.term-body .ln{display:block}
+.cursor{display:inline-block;width:7px;height:13px;background:#7ef0ff;vertical-align:-2px;margin-left:2px;animation:blink 1.05s steps(1) infinite}
+.out-tag{display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--brand-2);margin-top:14px}
+.out-tag::before{content:"";width:6px;height:6px;border-radius:99px;background:var(--brand-2)}
+
+/* ---------- notes ---------- */
+.note{display:grid;grid-template-columns:26px 1fr;gap:10px;padding:11px 13px;border-radius:11px;margin:10px 0;border:1px solid;font-size:12.5px;break-inside:avoid}
+.note b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:2px}
+.note p{color:#3c4560}
+.note .ico{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff}
+.note.tip{background:#effcf8;border-color:#c3f0e5}
+.note.tip .ico{background:#06a98f}.note.tip b{color:#068b76}
+.note.warn{background:#fff9ec;border-color:#f6e2b4}
+.note.warn .ico{background:#e2a11a}.note.warn b{color:#a97606}
+.note.fix{background:#fff1f1;border-color:#f7cccc}
+.note.fix .ico{background:#e05555}.note.fix b{color:#b93a3a}
+.note.info{background:#f2f0ff;border-color:#d9d3ff}
+.note.info .ico{background:var(--brand)}.note.info b{color:#4a3ae6}
+.note code{background:rgba(11,16,32,.06);padding:1px 5px;border-radius:5px;font-size:11.6px;color:#20293f}
+.note b code{text-transform:none;letter-spacing:0}
+
+/* ---------- cards / tables ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 0}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;break-inside:avoid}
+.card h4{font-size:12.5px;margin-bottom:4px}
+.card p{font-size:11.8px;color:var(--muted);line-height:1.55}
+.card .url{display:block;margin-top:7px;font-size:11px;word-break:break-all;color:var(--brand);font-family:"Cascadia Mono",Consolas,monospace}
+.card .num{font-size:10px;font-weight:800;letter-spacing:.14em;color:var(--brand-2);text-transform:uppercase}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:11.8px;background:#fff;border-radius:10px;overflow:hidden;break-inside:avoid}
+th{background:#0f1729;color:#dfe8fa;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:7px 10px}
+td{padding:5.5px 10px;border-top:1px solid #edf0f8;color:#39425c}
+td code,th code{font-size:11.4px;background:rgba(91,75,255,.08);color:#3a2fbf;padding:1px 5px;border-radius:5px}
+tr:nth-child(even) td{background:#fafbfe}
+
+/* ---------- steps list ---------- */
+.olist{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px;counter-reset:li}
+.olist li{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start;font-size:12.5px;color:#3c4560;break-inside:avoid}
+.olist li::before{
+  counter-increment:li;content:counter(li,decimal-leading-zero);
+  font-size:10px;font-weight:800;color:var(--brand);background:#f0eeff;border-radius:6px;
+  width:24px;height:24px;display:grid;place-items:center;
+}
+.olist li b{color:var(--ink)}
+kbd{
+  display:inline-block;background:#fff;border:1px solid #d5dbe9;border-bottom-width:2px;
+  border-radius:5px;padding:0 5px;font-size:11px;color:#2b3348;line-height:1.55;
+}
+
+/* ---------- experiments ---------- */
+.ex-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:10px 0}
+.ex{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;break-inside:avoid}
+.ex-head{padding:7px 11px;font-size:11px;font-weight:700;color:var(--ink);background:var(--soft);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+.ex-head code{font-weight:600;color:var(--brand);background:none;font-size:11px}
+.ex pre{margin:0;padding:9px 11px;background:#0e1526;color:#dbe6f7;font-size:11.2px;line-height:1.6;white-space:pre-wrap;overflow:auto}
+.ex-out{display:flex;gap:8px;align-items:baseline;padding:7px 11px;font-family:"Cascadia Mono",Consolas,monospace;font-size:11.4px;color:#0a7a68;background:#effcf8;border-top:1px solid #c3f0e5}
+.ex-out b{font-family:"Segoe UI",sans-serif;font-size:9px;letter-spacing:.14em;color:#06a98f}
+.outline{display:flex;align-items:baseline;gap:9px;margin:7px 0 0;font-size:11.8px;color:#2f384f}
+.outline b{font-family:"Segoe UI",sans-serif;font-size:9px;letter-spacing:.14em;color:#06a98f;text-transform:uppercase}
+.outline code{font-family:"Cascadia Mono",Consolas,monospace;font-size:11.6px;color:#1f5f52;background:#effcf8;border:1px solid #c3f0e5;border-radius:5px;padding:1px 6px}
+
+/* ---------- playground ---------- */
+.playground{border:1px solid #cfd7ea;border-radius:13px;overflow:hidden;background:#fff;margin:14px 0;break-inside:avoid}
+.pg-head{display:flex;align-items:center;gap:8px;padding:9px 13px;background:linear-gradient(90deg,#f4f2ff,#eefcf9);border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:#3b3f66;letter-spacing:.02em}
+.pg-head .dot{width:6px;height:6px;border-radius:99px;background:var(--brand);box-shadow:0 0 0 4px rgba(91,75,255,.12)}
+.pg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:12px 13px}
+.pg-grid label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:grid;gap:4px}
+.pg-grid input{
+  width:100%;border:1px solid #d6ddec;border-radius:8px;padding:7px 9px;
+  font:600 12.5px "Cascadia Mono",Consolas,monospace;color:var(--ink);background:#fbfcff;outline:none;
+}
+.pg-grid input:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(91,75,255,.13)}
+.playground .term{border:0;border-radius:0;margin:0;box-shadow:none}
+.playground .term-body{min-height:52px}
+
+/* ---------- challenges ---------- */
+.chal{display:grid;gap:9px;margin:12px 0}
+.chal details,.chal .ch{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 14px;break-inside:avoid}
+.chal h4{font-size:12.5px;display:flex;gap:8px;align-items:baseline}
+.chal h4 span{font-size:9.5px;font-weight:800;letter-spacing:.1em;color:var(--brand-2)}
+.chal p{font-size:12px;color:#4a5470;margin-top:2px}
+.chal .hint{font-size:11.5px;color:var(--muted);margin-top:5px}
+.chal .hint b{color:#7b849c;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase}
+
+/* ---------- vscode mock ---------- */
+.vscode{border-radius:12px;overflow:hidden;border:1px solid #1c2740;background:#0b1220;box-shadow:var(--shadow);margin:12px 0;break-inside:avoid}
+.vs-title{display:flex;align-items:center;gap:6px;padding:7px 11px;background:#0f1a2b;border-bottom:1px solid #1c2740;font-size:10.5px;color:#8fa1c0}
+.vs-title i{width:8px;height:8px;border-radius:99px;background:#ff5f57}
+.vs-title i:nth-child(2){background:#febc2e}
+.vs-title i:nth-child(3){background:#28c840}
+.vs-title span{margin-left:6px;letter-spacing:.04em}
+.vs-body{display:grid;grid-template-columns:134px 1fr;min-height:206px}
+.vs-side{background:#0a1322;border-right:1px solid #16223a;padding:9px 0;font-size:10.5px;color:#6d7f9c}
+.vs-side span{display:block;padding:3px 12px}
+.vs-side .on{color:#cdd8ee;background:rgba(91,75,255,.16)}
+.vs-main{position:relative}
+.vs-tabs{display:flex;gap:2px;padding:6px 8px 0;background:#0d1727;font-size:10px;color:#8494ae}
+.vs-tab{padding:4px 9px;border-radius:5px 5px 0 0;background:#0b1220;color:#cdd8ee}
+.vs-code{padding:10px 14px;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.8px;line-height:1.78;color:#c7d4e8}
+.vs-code .ln-no{display:inline-block;width:18px;color:#3f5372;font-size:9px}
+.vs-palette{position:absolute;left:26px;right:26px;bottom:12px;background:#111d31;border:1px solid #26374f;border-radius:8px;box-shadow:0 14px 30px -10px #000;overflow:hidden}
+.vs-input{padding:7px 10px;font-size:11px;color:#dbe6f7;border-bottom:1px solid #22334b;display:flex;align-items:center}
+.vs-caret{width:1px;height:12px;background:#7ef0ff;display:inline-block;margin-left:1px;animation:blink 1s steps(1) infinite}
+.vs-item{padding:5px 10px;font-size:10.5px;color:#93a4c0;display:flex;justify-content:space-between;gap:8px}
+.vs-item.sel{background:#1b2c45;color:#fff}
+.vs-item b{font-weight:600}
+.vs-item span{font-size:9px;color:#6f82a0}
+.tree{margin:6px 0 0;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.6px;line-height:1.65;color:#4a5470;white-space:pre}
+.drill{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;margin-top:6px}
+.drill span{display:flex;justify-content:space-between;gap:8px;align-items:baseline;border-bottom:1px dashed #e7ebf5;padding:3px 0;font-size:11.6px}
+.drill em{font-style:normal;font-size:11px;font-weight:700;color:#068b76}
+.drill code{font-size:11.4px;color:#3a2fbf;background:rgba(91,75,255,.07);padding:0 4px;border-radius:4px}
+.terms{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:11px;background:#fff;margin:10px 0;overflow:hidden;break-inside:avoid}
+.terms div{padding:8px 11px;border-left:1px solid var(--line)}
+.terms div:first-child{border-left:0}
+.terms b{display:block;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--brand);margin-bottom:1px}
+.terms span{font-size:11.2px;color:var(--muted);line-height:1.45}
+.snippet{margin:6px 0 0;padding:7px 9px;background:#0f1729;border-radius:7px;font-family:"Cascadia Mono",Consolas,monospace;font-size:10.6px;line-height:1.62;color:#c7d4e8;white-space:pre;overflow:auto}
+
+/* ---------- misc ---------- */
+.sec-title{font-size:18.5px;margin:24px 0 3px;padding-top:4px}
+.sec-sub{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;font-size:12px}
+.kv dt{font-weight:700;color:var(--ink)}
+.kv dd{margin:0;color:#4a5470}
+hr.soft{border:0;border-top:1px solid var(--line);margin:22px 0}
+.endcard{
+  margin-top:18px;border-radius:16px;padding:16px 20px;color:#dfe9ff;break-inside:avoid;
+  background:radial-gradient(600px 220px at 100% 0%,rgba(0,194,168,.25),transparent 60%),#0b1222;
+}
+.endcard h3{color:#fff;font-size:17px}
+.endcard p{color:#9fadc9;font-size:12px;margin-top:5px}
+.endcard .links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.endcard .links a{font-size:11px;color:#bcd2ff;border:1px solid rgba(255,255,255,.16);border-radius:6px;padding:4px 9px;background:rgba(255,255,255,.04)}
+.foot-note{margin-top:34px;text-align:center;font-size:10.5px;color:#98a1b8}
+
+/* ---------- motion ---------- */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.8,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.step-head.reveal{transition-delay:.02s}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none}
+  *{animation:none!important;transition:none!important}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;height:auto;flex-direction:row;align-items:center;gap:14px;overflow:auto;padding:12px 16px}
+  .rail nav{flex-direction:row}
+  .rail-foot{display:none}
+  .main{padding:22px 18px 50px}
+  .cover h1{font-size:40px}
+  .toc-grid,.grid-2,.grid-3,.ex-grid{grid-template-columns:1fr}
+  .howto{grid-template-columns:repeat(2,1fr)}
+  .pg-grid{grid-template-columns:1fr}
+}
+
+/* ---------- print ---------- */
+@media print{
+  body{background:#fff;font-size:11.6px;line-height:1.6}
+  .shell{display:block;max-width:none}
+  .rail{display:none!important}
+  .main{padding:0}
+  .paper{max-width:none}
+  .cover{border-radius:14px;padding:36px 36px 30px;box-shadow:none;min-height:930px}
+  .cover h1{font-size:62px}
+  .cover .lede{font-size:13.5px}
+  .cover-term{margin-top:30px}
+  .cover-term pre{font-size:12px}
+  .cover h1 .grad{
+    background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+    color:#8ff0d9!important;-webkit-text-fill-color:#8ff0d9!important;
+  }
+
+  .toc{padding-top:22px}
+  .toc-grid a{box-shadow:none}
+  .step{break-before:page;padding-top:2px}
+  .step:first-of-type{break-before:auto}
+  .toc{break-after:page}
+  .cover{break-after:page}
+  .prog i{width:var(--p)!important}
+  .reveal{opacity:1!important;transform:none!important}
+  .copy,.runbtn{display:none!important}
+  figure.code,.term,.card,.note,.ex,.playground,.chal>div,.toc-grid a{break-inside:avoid}
+  figure.code{box-shadow:none}
+  .term{box-shadow:none}
+  a{color:inherit;text-decoration:none}
+  .endcard{box-shadow:none}
+  .foot-note{margin-top:18px}
+}
+
+/* ================= Day 4 additions ================= */
+.pill.day4pill{background:rgba(66,133,244,.16);border-color:rgba(66,133,244,.42);color:#bcd4ff}
+.cover.day4{
+  background:
+    radial-gradient(900px 420px at 88% -12%,rgba(66,133,244,.36),transparent 62%),
+    radial-gradient(700px 420px at 4% 110%,rgba(255,202,40,.26),transparent 60%),
+    #071022;
+}
+.cover.day4 h1 .grad{
+  background:linear-gradient(96deg,#8fb9ff,#ffca28 62%,#ff8a65);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+@media print{
+  .cover.day4 h1 .grad{
+    background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+    color:#ffd27a!important;-webkit-text-fill-color:#ffd27a!important;
+  }
+}
+
+/* preview / phone mock */
+.preview{display:grid;grid-template-columns:252px minmax(0,1fr);gap:22px;align-items:center;margin:14px 0;break-inside:avoid}
+.preview.top{align-items:start}
+.preview-side h4{font-size:13.5px;margin-bottom:4px}
+.preview-side p{font-size:12.4px;color:#4a5470;line-height:1.6}
+.preview-side .note{margin:8px 0 0}
+.preview-side .run{margin:8px 0 0}
+.phone{width:236px;border-radius:34px;background:#0b1220;padding:8px;position:relative;
+  box-shadow:0 26px 50px -26px rgba(12,18,40,.6),inset 0 0 0 1px rgba(255,255,255,.05)}
+.phone::after{content:"";position:absolute;left:50%;top:13px;transform:translateX(-50%);width:62px;height:5px;border-radius:99px;background:#1c2740;z-index:3}
+.ph-screen{border-radius:26px;overflow:hidden;background:#fff;height:392px;display:flex;flex-direction:column;position:relative}
+.ph-status{height:26px;background:inherit;color:#111;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:8.5px;font-weight:800;letter-spacing:.04em;flex:none}
+.ph-status.dark{color:#fff}
+.ph-appbar{height:48px;flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;background:#009688;letter-spacing:.01em;box-shadow:0 3px 8px -4px rgba(0,0,0,.35)}
+.ph-body{flex:1;display:flex;align-items:center;justify-content:center;background:#fff;position:relative;padding:14px;overflow:hidden}
+.ph-body.dark{background:#000}
+.ph-body.top{justify-content:flex-start;flex-direction:column;gap:13px;padding-top:26px}
+.ph-caption{text-align:center;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#98a1b8;font-weight:700;margin-top:6px}
+.ph-field{border:1px solid #c9d2e2;border-radius:5px;padding:5px 7px;font-size:7.5px;color:#6b7591;width:100%}
+.ph-flabel{font-size:7.5px;font-weight:800;color:#14181f;letter-spacing:.02em;width:100%}
+.ph-checkrow{display:flex;align-items:center;gap:6px;font-size:7.5px;color:#39425c;width:100%}
+.ph-checkbox{width:10px;height:10px;border:1.5px solid #009688;border-radius:2px;display:inline-block;flex:none}
+.ph-radio{width:9px;height:9px;border:1.5px solid #009688;border-radius:50%;display:inline-block;flex:none}
+.ph-radio.on{background:#009688;box-shadow:inset 0 0 0 2px #fff}
+.ph-track{height:4px;background:#e0e4ee;border-radius:9px;width:100%}
+.ph-track i{display:block;height:4px;background:#009688;border-radius:9px}
+.ph-switch{width:18px;height:10px;background:#009688;border-radius:9px;position:relative;flex:none}
+.ph-switch::after{content:"";position:absolute;right:1px;top:1px;width:8px;height:8px;border-radius:50%;background:#fff}
+.ph-btnmini{background:#009688;color:#fff;border-radius:4px;padding:5px 14px;font-size:7.5px;font-weight:800}
+.ph-btnmini.blue{background:#3f51b5}
+.ph-linkmini{font-size:7px;color:#3f51b5;text-align:center;width:100%}
+.ph-map{position:absolute;inset:0;background:
+  linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px),
+  radial-gradient(circle at 55% 45%,#1f6b57,#0b1f2a 70%);
+  background-size:26px 26px,26px 26px,auto}
+.ph-pin{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-size:30px;filter:drop-shadow(0 5px 6px rgba(0,0,0,.5))}
+.ph-mapcard{position:absolute;left:10px;right:10px;bottom:10px;background:#fff;border-radius:6px;padding:5px 8px;font-size:7px;color:#39425c;line-height:1.5}
+.flow{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:12px 0;font-size:11px}
+.flow span{background:#fff;border:1px solid var(--line);border-radius:7px;padding:4px 9px;color:#3c4560;font-weight:600}
+.flow i{color:#a9b2c7;font-style:normal}
+@media (max-width:1000px){
+  .preview{grid-template-columns:1fr}
+  .preview .phone{margin:0 auto}
+}
+@media print{
+  .preview{grid-template-columns:252px 1fr}
+  .phone{box-shadow:none}
+}
+
+/* mock extras used on Day 4 */
+.ph-tile{display:flex;align-items:center;gap:6px;width:100%;font-size:7.5px;color:#39425c;border-bottom:1px solid #eef1f8;padding:4px 0}
+.ph-tile .ic{width:11px;height:11px;border-radius:3px;background:#009688;opacity:.9;flex:none}
+.ph-tile small{color:#9aa3b8;font-size:6.5px;margin-left:auto}
+.ph-panel{width:100%;border:1px solid #e3e8f3;border-radius:4px;overflow:hidden}
+.ph-panel-h{background:#f5f7fc;padding:3px 6px;font-size:7px;font-weight:800;color:#14181f}
+.ph-panel-b{padding:3px 8px;font-size:6.8px;color:#6b7591;line-height:1.7}
+.ph-rows{display:flex;flex-direction:column;gap:5px;width:100%}
+.ph-rowline{display:flex;justify-content:space-between;gap:8px;font-size:7px;color:#39425c}
+.ph-rowline b{color:#14181f}
+.ph-fabmini{position:absolute;right:12px;bottom:12px;width:26px;height:26px;border-radius:50%;background:#009688;color:#fff;display:grid;place-items:center;font-size:14px;box-shadow:0 8px 14px -6px rgba(0,150,136,.9)}
+.ph-steps{font-size:23px;font-weight:800;color:#111;text-align:center;line-height:1.2}
+.ph-steps small{display:block;font-size:6.8px;font-weight:700;color:#9aa3b8;letter-spacing:.14em;margin-bottom:7px;text-transform:uppercase}
+.ph-auth-icon{width:34px;height:34px;border-radius:50%;background:#009688;color:#fff;display:grid;place-items:center;font-size:15px;margin:0 auto 8px}
+.ph-err{color:#b93a3a;background:#fff1f1;border:1px solid #f7cccc;border-radius:4px;padding:4px 6px;font-size:6.8px;width:100%;line-height:1.5}
+.ph-sheetwrap{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;z-index:4}
+.ph-scrim{position:absolute;inset:0;background:rgba(3,8,18,.45)}
+.ph-sheet{position:relative;background:#fff;border-radius:12px 12px 0 0;padding:9px 12px 12px;box-shadow:0 -12px 22px -14px rgba(0,0,0,.45)}
+.ph-sheet h5{margin:0 0 5px;font-size:8px;font-weight:800;color:#111;text-align:center;letter-spacing:.02em}
+.ph-sheet .grab{width:26px;height:3px;border-radius:9px;background:#e0e4ee;margin:0 auto 7px}
+.ph-sheet .l{font-size:6.9px;color:#39425c;line-height:1.65}
+.ph-tabs{display:flex;gap:4px;width:100%;margin-bottom:2px}
+.ph-tabs span{flex:1;text-align:center;font-size:6.6px;padding:3px 0;border-radius:4px;background:#f5f7fc;color:#6b7591;font-weight:700}
+.ph-tabs span.on{background:#009688;color:#fff}
+.code-sm{font-size:11px}
+</style>
+</head>
+
+<body>
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-brand"><span class="logo">◆</span> Day 4 Lab</div>
+    <nav id="railnav">
+      <a href="#setup"><span>00</span> Before you start</a>
+      <a href="#step-1"><span>01</span> Form widgets</a>
+      <a href="#step-2"><span>02</span> Dialogs &amp; sheets</a>
+      <a href="#step-3"><span>03</span> Geolocation</a>
+      <a href="#step-4"><span>04</span> Firebase project</a>
+      <a href="#step-5"><span>05</span> Authentication</a>
+      <a href="#step-6"><span>06</span> Realtime DB</a>
+      <a href="#step-7"><span>07</span> Cloud Firestore</a>
+      <a href="#step-8"><span>08</span> Publish</a>
+      <a href="#challenges"><span>09</span> Challenges</a>
+      <a href="#cheatsheet"><span>10</span> Cheat sheet</a>
+    </nav>
+    <div class="rail-foot">Certified Flutter Application Development (Android ATC)<br>Forms, Maps &amp; Firebase</div>
+  </aside>
+
+  <main class="main">
+    <div class="paper">
+
+      <!-- ================= COVER ================= -->
+      <header class="cover day4" id="top">
+        <div class="cover-inner">
+          <div class="cover-top">
+            <span class="pill">Certified Flutter Application Development (Android ATC)</span>
+            <span class="pill day4pill">Lab · Day 04</span>
+          </div>
+          <h1>Health App<br><span class="grad">Goes Live</span></h1>
+          <p class="lede">One checkup form, one map pin, one account. Today the health app stops being a mock-up: typed input, pickers, dialogs and sheets, GPS through <code>geolocator</code>, login through Firebase Auth, then storage in Realtime Database and Cloud Firestore — and finally a signed build for the Play Store.</p>
+          <div class="cover-tags">
+            <span>8 steps</span><span>6 Dart files</span><span>~3 hours</span><span>Firebase project</span>
+          </div>
+          <div class="cover-term">
+            <div class="term-bar"><i></i><i></i><i></i><span>main.dart</span></div>
+            <pre><span class="k">void</span> <span class="f">main</span>() <span class="k">async</span> {
+  WidgetsFlutterBinding.<span class="f">ensureInitialized</span>();
+  <span class="k">await</span> Firebase.<span class="f">initializeApp</span>();<span class="caret"></span>
+}</pre>
+          </div>
+          <div class="cover-foot">Collect · Locate · Authenticate · Store · Publish</div>
+        </div>
+      </header>
+
+      <!-- ================= TOC ================= -->
+      <section class="toc">
+        <h2 class="eyebrow">What's inside</h2>
+        <h2>Your route through Day 4</h2>
+        <div class="toc-grid">
+          <a href="#setup"><b>00</b><span>Before you start</span><em>Project, packages, device</em></a>
+          <a href="#step-1"><b>01</b><span>Form widgets</span><em>Text, checkbox, radio, pickers</em></a>
+          <a href="#step-2"><b>02</b><span>Dialogs &amp; bottom sheets</span><em>Three ways to overlay</em></a>
+          <a href="#step-3"><b>03</b><span>Geolocation</span><em>Permission, Position, GoogleMap</em></a>
+          <a href="#step-4"><b>04</b><span>Firebase project</span><em>Console, packages, configure</em></a>
+          <a href="#step-5"><b>05</b><span>Authentication</span><em>Login, signup, auth stream</em></a>
+          <a href="#step-6"><b>06</b><span>Realtime Database</span><em>Live step counter</em></a>
+          <a href="#step-7"><b>07</b><span>Cloud Firestore</span><em>Daily health records</em></a>
+          <a href="#step-8"><b>08</b><span>Publish the app</span><em>Keystore, AAB, Play Console</em></a>
+          <a href="#challenges"><b>09</b><span>Challenges</span><em>Ship your own version</em></a>
+        </div>
+        <div class="howto">
+          <div><b>Step 1</b>Add the package, then run the screen.</div>
+          <div><b>Step 2</b>Compare the preview with your emulator.</div>
+          <div><b>Step 3</b>Stop and restart after native changes.</div>
+          <div><b>Step 4</b>Finish with the challenges at the end.</div>
+        </div>
+      </section>
+
+      <!-- ================= SETUP ================= -->
+      <section class="step" id="setup">
+        <div class="step-head reveal">
+          <span class="step-no">00</span>
+          <div>
+            <h2>Before you start</h2>
+            <p class="step-sub">One Flutter project, five new packages, and a Firebase project created in a browser tab.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:6%"></i></div>
+
+        <div class="grid-3">
+          <div class="card">
+            <span class="num">Project</span>
+            <h4>Keep using Day 3</h4>
+            <p>Every screen below drops into the same app. Starting fresh is fine: <code>flutter create lab_day4_app</code>.</p>
+          </div>
+          <div class="card">
+            <span class="num">Packages</span>
+            <h4>Five additions</h4>
+            <p><code>geolocator</code>, <code>google_maps_flutter</code>, <code>firebase_core</code>, <code>firebase_auth</code>, <code>firebase_database</code>, plus <code>cloud_firestore</code>.</p>
+          </div>
+          <div class="card">
+            <span class="num">Accounts</span>
+            <h4>Free Firebase project</h4>
+            <p>The Spark plan is enough for the whole lab. No billing card required.</p>
+            <a class="url" href="https://console.firebase.google.com/" target="_blank">console.firebase.google.com</a>
+          </div>
+        </div>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>Package name matters</b><p>Imports such as <code>package:flutternov25london/SignupScreen.dart</code> reuse the project name from <code>pubspec.yaml</code>. Yours will be different — replace that one segment, or use a relative import like <code>import './SignupScreen.dart';</code>.</p></div>
+        </div>
+
+        <table>
+          <tr><th style="width:32%">File</th><th>Role</th></tr>
+          <tr><td><code>main.dart</code></td><td>Entry point. Initialises Firebase, then chooses Login or Home from the auth stream.</td></tr>
+          <tr><td><code>MyFormDemo.dart</code></td><td>Health checkup form: text, checkbox, radio, date/time, slider, switch, expansion panel.</td></tr>
+          <tr><td><code>MyGeolocation.dart</code></td><td>Asks for permission, reads one <code>Position</code>, shows it on <code>GoogleMap</code>.</td></tr>
+          <tr><td><code>LoginScreen.dart</code></td><td>Email + password sign-in with error handling.</td></tr>
+          <tr><td><code>SignupScreen.dart</code></td><td>Creates the account, then pops back to login.</td></tr>
+          <tr><td><code>HomeScreen.dart</code></td><td>Signed-in screen. Version A counts steps in Realtime Database; version B saves daily records in Firestore.</td></tr>
+        </table>
+
+        <div class="out-tag">Terminal — project and packages</div>
+        <div class="term" data-sim>
+          <div class="term-bar"><i></i><i></i><i></i><span>powershell — project root</span><button class="runbtn" type="button">▶ Run</button></div>
+<pre class="term-body"><span class="ln cmd">flutter create lab_day4_app</span><span class="ln cmd">cd lab_day4_app</span><span class="ln cmd">flutter pub add geolocator google_maps_flutter</span><span class="ln cmd">flutter pub add firebase_core firebase_auth firebase_database cloud_firestore</span><span class="ln ok">Changed 6 dependencies!</span><span class="ln cmd">flutter run</span><span class="ln"><span class="cursor"></span></span></pre>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>Hot reload cannot do native setup</b><p>Permissions live in <code>AndroidManifest.xml</code> / <code>Info.plist</code>, not in Dart. After editing them, <b>stop the app and run it again</b> — a hot reload will still say "permission denied".</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 1 ================= -->
+      <section class="step" id="step-1">
+        <div class="step-head reveal">
+          <span class="step-no">01</span>
+          <div>
+            <h2>Every form control, one screen</h2>
+            <p class="step-sub">Text, checkbox, radio, date picker, time picker, slider, switch and an expansion panel — each one wired to <code>setState()</code>.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:15%"></i></div>
+
+        <p>A <b>StatefulWidget</b> is the whole trick here: every control stores its value in a field of the state object, and every change calls <code>setState()</code> so Flutter rebuilds the tree with the new value.</p>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/MyFormDemo.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+
+class MyFormDemo extends StatefulWidget {
+  const MyFormDemo({super.key});
+
+  @override
+  State&lt;MyFormDemo&gt; createState() =&gt; _MyFormDemoState();
+}
+
+class _MyFormDemoState extends State&lt;MyFormDemo&gt; {
+  // ---- text field ----
+  TextEditingController nameController = TextEditingController();
+
+  // ---- checkbox ----
+  bool isFasting = false;
+
+  // ---- radio button ----
+  String gender = "Male";
+
+  // ---- date picker ----
+  DateTime? selectedDate;
+
+  // ---- time picker ----
+  TimeOfDay? selectedTime;
+
+  // ---- slider ----
+  double sugarLevel = 90;
+
+  // ---- switch ----
+  bool notifications = false;
+
+  // ---- expansion panel ----
+  bool isExpanded = false;
+
+  // ---- persistent bottom sheet ----
+  PersistentBottomSheetController? persistentSheet;
+  GlobalKey&lt;ScaffoldState&gt; _key = GlobalKey&lt;ScaffoldState&gt;();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _key,
+      appBar: AppBar(
+        title: Text("Health Checkup Form"),
+        backgroundColor: Colors.teal,
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(16, 16, 16, 100),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ---- text field ----
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                labelText: "Patient Name",
+                border: OutlineInputBorder(),
+              ),
+            ),
+
+            SizedBox(height: 16),
+
+            // ---- checkbox ----
+            CheckboxListTile(
+              title: Text("Fasting Required"),
+              value: isFasting,
+              onChanged: (val) {
+                setState(() {
+                  isFasting = val!;
+                });
+              },
+            ),
+
+            // ---- radio buttons ----
+            Text("Gender", style: TextStyle(fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                Radio(
+                  value: "Male",
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value as String;
+                    });
+                  },
+                ),
+                Text("Male"),
+                Radio(
+                  value: "Female",
+                  groupValue: gender,
+                  onChanged: (value) {
+                    setState(() {
+                      gender = value as String;
+                    });
+                  },
+                ),
+                Text("Female"),
+              ],
+            ),
+
+            SizedBox(height: 16),
+
+            // ---- date picker ----
+            ListTile(
+              leading: Icon(Icons.calendar_month),
+              title: Text(
+                selectedDate == null
+                    ? "Select Checkup Date"
+                    : selectedDate.toString().split(" ").first,
+              ),
+              onTap: pickDate,
+            ),
+
+            // ---- time picker ----
+            ListTile(
+              leading: Icon(Icons.access_time),
+              title: Text(
+                selectedTime == null
+                    ? "Select Checkup Time"
+                    : selectedTime!.format(context),
+              ),
+              onTap: pickTime,
+            ),
+
+            SizedBox(height: 16),
+
+            // ---- slider ----
+            Text("Approx. Sugar Level (mg/dl): ${sugarLevel.toInt()}"),
+            Slider(
+              value: sugarLevel,
+              min: 70,
+              max: 200,
+              onChanged: (v) =&gt; setState(() =&gt; sugarLevel = v),
+            ),
+
+            SizedBox(height: 6),
+
+            // ---- switch ----
+            SwitchListTile(
+              title: Text("Enable Health Notifications"),
+              value: notifications,
+              onChanged: (val) =&gt; setState(() =&gt; notifications = val),
+            ),
+
+            SizedBox(height: 16),
+
+            // ---- expansion panel ----
+            ExpansionPanelList(
+              expansionCallback: (index, _) {
+                setState(() {
+                  isExpanded = !isExpanded;
+                });
+              },
+              children: [
+                ExpansionPanel(
+                  isExpanded: isExpanded,
+                  headerBuilder: (context, _) =&gt; ListTile(
+                    title: Text(
+                      "Test Includes",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  body: Column(
+                    children: [
+                      ListTile(title: Text("Blood Pressure")),
+                      ListTile(title: Text("Blood Sugar")),
+                      ListTile(title: Text("Cholesterol Panel")),
+                      ListTile(title: Text("Liver Function Test")),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 16),
+
+            // ---- submit button ----
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _showAlertBox,
+                    child: Text("Submit"),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 16),
+
+            // ---- modal bottom sheet ----
+            Center(
+              child: ElevatedButton(
+                onPressed: showModelSheet,
+                child: Text("View Summary (Modal Bottom Sheet)"),
+              ),
+            ),
+
+            SizedBox(height: 16),
+
+            // ---- persistent bottom sheet ----
+            Center(
+              child: ElevatedButton(
+                onPressed: showPersistentBottomSheet,
+                child: Text("Show Daily Health Tips"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void pickDate() async {
+    DateTime? d = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+    if (d != null) setState(() =&gt; selectedDate = d);
+  }
+
+  void pickTime() async {
+    TimeOfDay? t = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    if (t != null) setState(() =&gt; selectedTime = t);
+  }
+
+  void _showAlertBox() {
+    showDialog(
+      context: context,
+      builder: (_) =&gt; AlertDialog(
+        title: Text("Form Submitted"),
+        content: Text(
+          "Your health checkup request has been successfully submitted",
+        ),
+        actions: [
+          TextButton(
+            onPressed: () =&gt; Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showModelSheet() {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusGeometry.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) =&gt; Container(
+        padding: EdgeInsets.all(16),
+        height: 250,
+        width: 400,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Health Summary",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Text("Name : ${nameController.text}"),
+            Text("Gender: $gender"),
+            Text("Fasting: ${isFasting ? "Yes" : "No"}"),
+            Text(
+              "Date : ${selectedDate != null ? selectedDate.toString().split(" ").first : "Not Selected"}",
+            ),
+            Text(
+              "Time : ${selectedTime != null ? selectedTime!.format(context) : "Not Selected"}",
+            ),
+            Text("Sugar Level: ${sugarLevel.toInt()} mg/dl"),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void showPersistentBottomSheet() {
+    _key.currentState!.showBottomSheet(
+      (context) =&gt; Container(
+        color: Colors.orange.shade100,
+        height: 150,
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Daily Health Tips",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text("• Drink 2-3L water daily"),
+            Text("• Walk at least 30 minutes"),
+            Text("• Sleep 7-8 hours"),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="run"><span class="run-label">Run it</span><code>flutter run</code></div>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar">Health Checkup Form</div>
+                <div class="ph-body top" style="gap:6px;padding:10px 14px;justify-content:flex-start">
+                  <div class="ph-flabel">Patient Name</div>
+                  <div class="ph-field">Aarav Sharma</div>
+                  <div class="ph-checkrow"><span class="ph-checkbox"></span> Fasting Required</div>
+                  <div class="ph-flabel">Gender</div>
+                  <div class="ph-checkrow"><span class="ph-radio on"></span> Male <span class="ph-radio" style="margin-left:10px"></span> Female</div>
+                  <div class="ph-tile"><span class="ic"></span> Select Checkup Date <small>2026-11-11</small></div>
+                  <div class="ph-tile"><span class="ic"></span> Select Checkup Time <small>9:30 AM</small></div>
+                  <div class="ph-flabel">Approx. Sugar Level: 90</div>
+                  <div class="ph-track"><i style="width:18%"></i></div>
+                  <div class="ph-checkrow" style="justify-content:space-between">Enable Health Notifications <span class="ph-switch"></span></div>
+                  <div class="ph-panel">
+                    <div class="ph-panel-h">▾ Test Includes</div>
+                    <div class="ph-panel-b">Blood Pressure · Blood Sugar · Cholesterol · Liver Function</div>
+                  </div>
+                  <div class="ph-btnmini" style="width:100%;text-align:center">Submit</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">MyFormDemo</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>One state field per control</h4>
+            <p>Each widget reads a field and writes it back through <code>onChanged</code>. The controller holds the text; the pickers return a value or <code>null</code>; the slider returns a <code>double</code>; the switch and checkbox return a <code>bool</code>.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Nothing is submitted yet</b><p>Submit only opens a dialog. The summary sheet reads the live state — that is why it always matches what you see on screen.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <tr><th style="width:30%">Control</th><th>State field</th><th>Type</th></tr>
+          <tr><td><code>TextField</code></td><td><code>nameController</code></td><td><code>TextEditingController</code></td></tr>
+          <tr><td><code>CheckboxListTile</code></td><td><code>isFasting</code></td><td><code>bool</code></td></tr>
+          <tr><td><code>Radio</code></td><td><code>gender</code></td><td><code>String</code></td></tr>
+          <tr><td><code>showDatePicker</code></td><td><code>selectedDate</code></td><td><code>DateTime?</code></td></tr>
+          <tr><td><code>showTimePicker</code></td><td><code>selectedTime</code></td><td><code>TimeOfDay?</code></td></tr>
+          <tr><td><code>Slider</code></td><td><code>sugarLevel</code></td><td><code>double</code></td></tr>
+          <tr><td><code>SwitchListTile</code></td><td><code>notifications</code></td><td><code>bool</code></td></tr>
+          <tr><td><code>ExpansionPanelList</code></td><td><code>isExpanded</code></td><td><code>bool</code></td></tr>
+        </table>
+
+        <div class="grid-2">
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b>Radio has a newer API</b><p>From Flutter 3.32, <code>groupValue</code> and <code>onChanged</code> on <code>Radio</code> are deprecated. The code still compiles and runs, but the analyzer suggests wrapping the radios in <code>RadioGroup&lt;String&gt;</code>. Do that when you upgrade.</p></div>
+          </div>
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b>Dispose the controller</b><p>Add <code>void dispose(){ nameController.dispose(); super.dispose(); }</code> before shipping. It is not required for this lab, but leaking controllers is a real memory bug. The session snippet also imports <code>flutter/cupertino.dart</code>, which nothing uses — the analyzer flags it, so drop it.</p></div>
+          </div>
+        </div>
+
+        <h3 class="sec-title" style="margin-top:24px">Try the summary without the emulator</h3>
+        <p class="sec-sub">Change the values and watch the same lines the bottom sheet prints.</p>
+        <div class="playground">
+          <div class="pg-head"><span class="dot"></span> Interactive preview · runs in your browser</div>
+          <div class="pg-grid">
+            <label>Patient name<input id="pg-name" value="Aarav Sharma" autocomplete="off"></label>
+            <label>Gender<input id="pg-gender" value="Male" autocomplete="off"></label>
+            <label>Sugar (mg/dl)<input id="pg-sugar" value="90" inputmode="numeric" autocomplete="off"></label>
+          </div>
+          <div class="term">
+            <div class="term-bar"><i></i><i></i><i></i><span>Health Summary</span></div>
+            <pre class="term-body" id="pg-out"><span class="ln">Name : Aarav Sharma</span></pre>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Set <code>lastDate</code> to <code>DateTime.now()</code> and try to pick a future date — the picker blocks it. Then change <code>min: 70</code> to <code>0</code> and watch the slider reach further left. Finally make <code>isFasting</code> start as <code>true</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 2 ================= -->
+      <section class="step" id="step-2">
+        <div class="step-head reveal">
+          <span class="step-no">02</span>
+          <div>
+            <h2>Dialogs &amp; bottom sheets</h2>
+            <p class="step-sub">Three overlay patterns: a blocking dialog, a modal sheet that dims the page, and a persistent sheet that lives behind the app.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:26%"></i></div>
+
+        <h3 class="sec-title" style="margin-top:6px">A — AlertDialog</h3>
+        <p class="sec-sub">Use it for a decision or a confirmation. It blocks the screen until an action is tapped.</p>
+        <figure class="code">
+          <figcaption><span class="file">lib/MyFormDemo.dart — _showAlertBox()</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">void _showAlertBox() {
+  showDialog(
+    context: context,
+    builder: (_) =&gt; AlertDialog(
+      title: Text("Form Submitted"),
+      content: Text(
+        "Your health checkup request has been successfully submitted",
+      ),
+      actions: [
+        TextButton(
+          onPressed: () =&gt; Navigator.pop(context),
+          child: Text("OK"),
+        ),
+      ],
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <h3 class="sec-title" style="margin-top:24px">B — Modal bottom sheet</h3>
+        <p class="sec-sub">Rises from the bottom with a scrim behind it. Grab the data straight from state.</p>
+        <figure class="code">
+          <figcaption><span class="file">lib/MyFormDemo.dart — showModelSheet()</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">void showModelSheet() {
+  showModalBottomSheet(
+    context: context,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadiusGeometry.vertical(top: Radius.circular(20)),
+    ),
+    builder: (_) =&gt; Container(
+      padding: EdgeInsets.all(16),
+      height: 250,
+      width: 400,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Health Summary",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          Text("Name : ${nameController.text}"),
+          Text("Gender: $gender"),
+          Text("Fasting: ${isFasting ? "Yes" : "No"}"),
+          Text("Date : ${selectedDate != null ? selectedDate.toString().split(" ").first : "Not Selected"}"),
+          Text("Time : ${selectedTime != null ? selectedTime!.format(context) : "Not Selected"}"),
+          Text("Sugar Level: ${sugarLevel.toInt()} mg/dl"),
+        ],
+      ),
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <h3 class="sec-title" style="margin-top:24px">C — Persistent bottom sheet</h3>
+        <p class="sec-sub">Owned by the <code>Scaffold</code>, not by a route. That is why it needs the <code>GlobalKey&lt;ScaffoldState&gt;</code>.</p>
+        <figure class="code">
+          <figcaption><span class="file">lib/MyFormDemo.dart — showPersistentBottomSheet()</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">void showPersistentBottomSheet() {
+  _key.currentState!.showBottomSheet(
+    (context) =&gt; Container(
+      color: Colors.orange.shade100,
+      height: 150,
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text("Daily Health Tips",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(height: 8),
+          Text("• Drink 2-3L water daily"),
+          Text("• Walk at least 30 minutes"),
+          Text("• Sleep 7-8 hours"),
+        ],
+      ),
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar">Health Checkup Form</div>
+                <div class="ph-body top" style="gap:7px;padding:12px 14px;justify-content:flex-start">
+                  <div class="ph-field">Aarav Sharma</div>
+                  <div class="ph-checkrow"><span class="ph-checkbox"></span> Fasting Required</div>
+                  <div class="ph-tile"><span class="ic"></span> Checkup Date <small>2026-11-11</small></div>
+                  <div class="ph-track"><i style="width:18%"></i></div>
+                  <div class="ph-sheetwrap">
+                    <div class="ph-scrim"></div>
+                    <div class="ph-sheet">
+                      <div class="grab"></div>
+                      <h5>Health Summary</h5>
+                      <div class="l">Name : Aarav Sharma</div>
+                      <div class="l">Gender: Male</div>
+                      <div class="l">Fasting: No</div>
+                      <div class="l">Date : 2026-11-11</div>
+                      <div class="l">Time : 9:30 AM</div>
+                      <div class="l">Sugar Level: 90 mg/dl</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Modal bottom sheet</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Same state, different surface</h4>
+            <p>The sheet is a new route with its own <code>BuildContext</code> — note the <code>(_)</code> in the builder. Tapping the scrim, dragging down, or <code>Navigator.pop</code> closes it.</p>
+            <div class="note warn">
+              <span class="ico">!</span>
+              <div><b>Height is fixed</b><p><code>height: 250</code> clips long content. For real forms use <code>isScrollControlled: true</code> and let the sheet size itself.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <tr><th style="width:30%">API</th><th>Lifetime</th><th>Use it for</th></tr>
+          <tr><td><code>showDialog</code></td><td>Until dismissed</td><td>Confirm, delete, success, error.</td></tr>
+          <tr><td><code>showModalBottomSheet</code></td><td>Until dismissed</td><td>Summary, filters, a short form.</td></tr>
+          <tr><td><code>showBottomSheet</code></td><td>Until you close it</td><td>Music player, tips bar, persistent controls.</td></tr>
+          <tr><td><code>SnackBar</code></td><td>A few seconds</td><td>Something happened — no decision needed.</td></tr>
+        </table>
+
+        <div class="grid-2">
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b>Who owns the sheet?</b><p><code>showModalBottomSheet</code> builds a route, so <code>Navigator.pop(context)</code> closes it. <code>ScaffoldState.showBottomSheet</code> attaches to the scaffold, so you close it with the returned <code>PersistentBottomSheetController</code> or by tapping the scrim.</p></div>
+          </div>
+          <div class="note fix" style="margin:0">
+            <span class="ico">×</span>
+            <div><b>Null check on the key</b><p><code>_key.currentState!</code> is null if the scaffold has not been built yet. Calling this from <code>initState()</code> crashes. Trigger it from a button, or guard with <code>if (_key.currentState != null)</code>.</p></div>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Add an app bar action that calls <code>showPersistentBottomSheet</code>. Then store the returned controller in <code>persistentSheet</code> and add a second button that calls <code>persistentSheet!.close()</code>. Predict what happens when you press it twice.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 3 ================= -->
+      <section class="step" id="step-3">
+        <div class="step-head reveal">
+          <span class="step-no">03</span>
+          <div>
+            <h2>Geolocation &amp; a map</h2>
+            <p class="step-sub">Ask for permission, read <code>Position</code>, then pin it on <code>GoogleMap</code>.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:37%"></i></div>
+
+        <h3 class="sec-title" style="margin-top:6px">Configuration</h3>
+        <p class="sec-sub">Three files, one API key. Dart alone cannot grant a permission.</p>
+
+        <div class="run"><span class="run-label">Packages</span><code>flutter pub add geolocator</code><code>flutter pub add google_maps_flutter</code></div>
+
+        <figure class="code">
+          <figcaption><span class="file">android/app/src/main/AndroidManifest.xml</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="xml">&lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /&gt;
+
+&lt;application
+    android:label="zoomcode"
+    android:name="${applicationName}"
+    android:icon="@mipmap/ic_launcher"&gt;
+
+    &lt;meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="YOUR_ANDROID_MAPS_API_KEY" /&gt;
+&lt;/application&gt;</code></pre>
+        </figure>
+
+        <div class="grid-2">
+          <figure class="code" style="margin:0">
+            <figcaption><span class="file">ios/Runner/AppDelegate.swift</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="swift">import GoogleMaps
+import Flutter
+import UIKit
+
+@main
+@objc class AppDelegate: FlutterAppDelegate {
+  override func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -&gt; Bool {
+    GMSServices.provideAPIKey("YOUR_IOS_MAPS_API_KEY")
+    GeneratedPluginRegistrant.register(with: self)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}</code></pre>
+          </figure>
+
+          <figure class="code" style="margin:0">
+            <figcaption><span class="file">ios/Runner/Info.plist</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="xml">&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;
+&lt;string&gt;This app needs access to location when open.&lt;/string&gt;</code></pre>
+          </figure>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>Stop the app, then start it</b><p>A manifest or plist edit is compiled into the native shell. Hot reload and hot restart keep the old one. Close the app completely, run <code>flutter run</code> again — for iOS, run <code>pod install</code> inside <code>ios/</code> first.</p></div>
+        </div>
+
+        <h3 class="sec-title" style="margin-top:24px">The screen</h3>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/MyGeolocation.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+class MyGeolocationDemo extends StatefulWidget {
+  const MyGeolocationDemo({super.key});
+
+  @override
+  State&lt;MyGeolocationDemo&gt; createState() =&gt; _MyGeolocationDemoState();
+}
+
+class _MyGeolocationDemoState extends State&lt;MyGeolocationDemo&gt; {
+  Position? userPosition;
+
+  Future&lt;Position&gt; determinePosition() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permission is denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error('Location permission are permanently denied');
+    }
+
+    return Geolocator.getCurrentPosition();
+  }
+
+  _getCurrentPosition() async {
+    Position position = await determinePosition();
+    setState(() {
+      userPosition = position;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentPosition();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: userPosition == null
+          ? Center(child: CircularProgressIndicator())
+          : GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(
+                  userPosition!.latitude,
+                  userPosition!.longitude,
+                ),
+                zoom: 14,
+              ),
+              mapType: MapType.hybrid,
+              markers: {
+                Marker(
+                  position: LatLng(
+                    userPosition!.latitude,
+                    userPosition!.longitude,
+                  ),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueRed,
+                  ),
+                  markerId: MarkerId('my-position'),
+                ),
+              },
+            ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="run"><span class="run-label">Run it</span><code>flutter run</code></div>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status dark" style="position:absolute;left:0;right:0;top:0;z-index:5"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-body dark" style="padding:0">
+                  <div class="ph-map"></div>
+                  <div class="ph-pin">📍</div>
+                  <div class="ph-mapcard">
+                    <b>You are here</b><br>
+                    Lat 28.4595 · Lng 77.0266<br>
+                    <span style="color:#9aa3b8">MapType.hybrid · zoom 14</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">MyGeolocationDemo</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Permission, then position, then map</h4>
+            <p>The screen shows a spinner while <code>userPosition</code> is <code>null</code>. As soon as the position arrives, <code>setState</code> swaps the spinner for a <code>GoogleMap</code> centred on the coordinates with a red marker.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Emulator tip</b><p>In Android Studio use <i>Extended controls → Location</i> and send a point, otherwise the GPS can take a minute to answer.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <tr><th style="width:38%">Permission value</th><th>What to do</th></tr>
+          <tr><td><code>whileInUse</code></td><td>Allowed while the app is open. Carry on.</td></tr>
+          <tr><td><code>always</code></td><td>Allowed in the background. Carry on.</td></tr>
+          <tr><td><code>denied</code></td><td>Not answered yet or refused once — call <code>requestPermission()</code>.</td></tr>
+          <tr><td><code>deniedForever</code></td><td>The OS will not show the dialog again. Send the user to app settings.</td></tr>
+          <tr><td><code>unableToDetermine</code></td><td>Unknown (usually missing manifest entry). Fix the config.</td></tr>
+        </table>
+
+        <div class="grid-2">
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b>Why <code>Future&lt;Position&gt;</code>?</b><p>An <code>async</code> function that returns <code>Future.error(...)</code> on one path and a value on another can be inferred as <code>Future&lt;dynamic&gt;</code>. Annotating it keeps the compiler honest and makes <code>await</code> return a real <code>Position</code>.</p></div>
+          </div>
+          <div class="note fix" style="margin:0">
+            <span class="ico">×</span>
+            <div><b>Unhandled exception</b><p><code>deniedForever</code> throws from <code>determinePosition()</code>, and nothing catches it — the red screen appears. Wrap the call in <code>try/catch</code> and show a message with a "Open settings" button.</p></div>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Deny the permission twice in a row on Android, then press the button again — you now hit <code>deniedForever</code>. Add <code>Geolocator.openAppSettings()</code> behind a button in that branch. Then switch <code>MapType.hybrid</code> to <code>MapType.satellite</code>.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 4 ================= -->
+      <section class="step" id="step-4">
+        <div class="step-head reveal">
+          <span class="step-no">04</span>
+          <div>
+            <h2>Create the Firebase project</h2>
+            <p class="step-sub">Console first, packages second, configure last. Skipping the order is what produces <i>"No Firebase App '[DEFAULT]' has been created"</i>.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:47%"></i></div>
+
+        <div class="grid-3">
+          <div class="card">
+            <span class="num">Console</span>
+            <h4>Create a project</h4>
+            <p>Name it <code>health-app-day4</code>. Analytics is optional — skip it to keep setup short.</p>
+            <a class="url" href="https://console.firebase.google.com/" target="_blank">console.firebase.google.com</a>
+          </div>
+          <div class="card">
+            <span class="num">Product</span>
+            <h4>Authentication</h4>
+            <p>Build → Authentication → Sign-in method → enable <b>Email/Password</b>. Nothing else is needed today.</p>
+          </div>
+          <div class="card">
+            <span class="num">Database</span>
+            <h4>Two databases</h4>
+            <p>Create a <b>Realtime Database</b> (test mode) and a <b>Cloud Firestore</b> (test mode) in the same project.</p>
+          </div>
+        </div>
+
+        <ol class="olist">
+          <li><span><b>Open the console</b> and click <b>Add project</b>. Give it a name, accept the defaults.</span></li>
+          <li><span><b>Add an Android app</b> inside the project. The package name must match <code>applicationId</code> in <code>android/app/build.gradle.kts</code>.</span></li>
+          <li><span><b>Add an iOS app</b> as well if you are on a Mac — the bundle id is in Xcode.</span></li>
+          <li><span><b>Install the FlutterFire CLI</b>: <code>dart pub global activate flutterfire_cli</code>, then run <code>flutterfire configure</code> in the project root.</span></li>
+          <li><span><b>Pick the platforms</b> when asked. It writes <code>lib/firebase_options.dart</code> and drops the native config files in place.</span></li>
+          <li><span><b>Enable Email/Password</b> in Authentication, and create both databases in test mode.</span></li>
+          <li><span><b>Stop and start the app</b> once the config files are in.</span></li>
+        </ol>
+
+        <div class="flow">
+          <span>Console project</span><i>→</i><span>Register app</span><i>→</i><span>flutterfire configure</span><i>→</i><span>pub get</span><i>→</i><span>Firebase.initializeApp()</span><i>→</i><span>Run</span>
+        </div>
+
+        <figure class="code">
+          <figcaption><span class="file">pubspec.yaml — dependencies</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="yaml">dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  firebase_database: ^12.1.0
+  cloud_firestore: ^6.0.0</code></pre>
+        </figure>
+
+        <div class="run"><span class="run-label">After editing pubspec</span><code>flutter pub get</code></div>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>What <code>flutterfire configure</code> actually does</b><p>It creates a Firebase app for each platform, downloads <code>google-services.json</code> (Android) and <code>GoogleService-Info.plist</code> (iOS), and generates <code>firebase_options.dart</code>. That is why you no longer edit <code>build.gradle</code> by hand for Firebase.</p></div>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>Two project names that must agree</b><p>The Android package name in the console, the <code>applicationId</code> in Gradle and the app you run must all be identical. One character off and Firebase initialises to nothing, silently.</p></div>
+        </div>
+
+        <div class="note fix">
+          <span class="ico">×</span>
+          <div><b>No Firebase App '[DEFAULT]' has been created</b><p>You called <code>FirebaseAuth.instance</code> before <code>Firebase.initializeApp()</code>. Add the two lines at the top of <code>main()</code> from the next step — and keep <code>WidgetsFlutterBinding.ensureInitialized()</code> before them.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 5 ================= -->
+      <section class="step" id="step-5">
+        <div class="step-head reveal">
+          <span class="step-no">05</span>
+          <div>
+            <h2>Authentication</h2>
+            <p class="step-sub">Three screens and a stream: signup creates the user, login signs in, and <code>authStateChanges()</code> decides which screen you see.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:58%"></i></div>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/LoginScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutternov25london/SignupScreen.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State&lt;LoginScreen&gt; createState() =&gt; _LoginScreenState();
+}
+
+class _LoginScreenState extends State&lt;LoginScreen&gt; {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Login")),
+      body: Padding(
+        padding: EdgeInsetsGeometry.all(20),
+        child: Column(
+          children: [
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: "Email"),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: "Password"),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            loading
+                ? CircularProgressIndicator()
+                : ElevatedButton(onPressed: loginUser, child: Text('Login')),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) =&gt; SignupScreen()),
+                );
+              },
+              child: Text("Create new account"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void loginUser() async {
+    setState(() =&gt; loading = true);
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      setState(() =&gt; loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? "Login failed")),
+      );
+    }
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/SignupScreen.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
+  @override
+  State&lt;SignupScreen&gt; createState() =&gt; _SignupScreenState();
+}
+
+class _SignupScreenState extends State&lt;SignupScreen&gt; {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Signup")),
+      body: Padding(
+        padding: EdgeInsetsGeometry.all(20),
+        child: Column(
+          children: [
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: "Email"),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: "Password"),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            loading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: registerUser,
+                    child: Text('Create Account'),
+                  ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void registerUser() async {
+    setState(() =&gt; loading = true);
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      setState(() =&gt; loading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? "Signup failed")),
+      );
+    }
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart — signed-in shell</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Home"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () =&gt; FirebaseAuth.instance.signOut(),
+          ),
+        ],
+      ),
+      body: Center(child: Text("Login Success")),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/main.dart</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutternov25london/HomeScreen.dart';
+import 'package:flutternov25london/LoginScreen.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return HomeScreen();
+          }
+          return LoginScreen();
+        },
+      ),
+    ),
+  );
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar">Login</div>
+                <div class="ph-body top" style="gap:9px;padding:22px 18px">
+                  <div class="ph-auth-icon">♥</div>
+                  <div class="ph-flabel">Email</div>
+                  <div class="ph-field">aarav@example.com</div>
+                  <div class="ph-flabel">Password</div>
+                  <div class="ph-field">••••••••</div>
+                  <div class="ph-btnmini" style="width:100%;text-align:center;padding:7px 0">Login</div>
+                  <div class="ph-err">The password is invalid or the user does not have a password.</div>
+                  <div class="ph-linkmini">Create new account</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">LoginScreen</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>One stream drives both screens</h4>
+            <p><code>authStateChanges()</code> emits a <code>User</code> on login and <code>null</code> on logout. The <code>StreamBuilder</code> rebuilds, and the whole navigation problem disappears — no <code>pushReplacement</code> needed.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Signup pops back</b><p>After <code>createUserWithEmailAndPassword</code> Firebase signs the user in automatically. The stream would already swap screens, so <code>Navigator.pop</code> is only there to clear the signup route.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <tr><th style="width:44%">Call</th><th>Effect</th></tr>
+          <tr><td><code>signInWithEmailAndPassword</code></td><td>Signs an existing user in. Throws <code>FirebaseAuthException</code> on failure.</td></tr>
+          <tr><td><code>createUserWithEmailAndPassword</code></td><td>Creates the account and signs in. Fails if the email already exists.</td></tr>
+          <tr><td><code>signOut()</code></td><td>Clears the session; the stream emits <code>null</code>.</td></tr>
+          <tr><td><code>authStateChanges()</code></td><td>Stream of <code>User?</code> for the whole app lifetime.</td></tr>
+          <tr><td><code>currentUser</code></td><td>The signed-in user right now, or <code>null</code>. Used for the <code>uid</code>.</td></tr>
+        </table>
+
+        <div class="grid-2">
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b>Case matters</b><p>The session notes write <code>Navigator.push(Context, ...)</code> with a capital C. That is the <code>BuildContext</code> <i>type</i>, not the variable — it will not compile. Use <code>context</code>.</p></div>
+          </div>
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b>Reset <code>loading</code></b><p>On success the screen is replaced, so leaving <code>loading = true</code> is harmless. On failure it must go back to <code>false</code>, otherwise the spinner spins forever — that is the <code>setState</code> inside <code>catch</code>.</p></div>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Sign up with a 5-character password and read the exception message in the SnackBar. Then sign in with the same email and <code>firebase</code> as the password — wrong password, different message. Finally press logout and watch the stream swap you back to Login.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 6 ================= -->
+      <section class="step" id="step-6">
+        <div class="step-head reveal">
+          <span class="step-no">06</span>
+          <div>
+            <h2>Realtime Database</h2>
+            <p class="step-sub">One number, saved under the user's <code>uid</code>, updating on every device at once.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:68%"></i></div>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart — Realtime Database version</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State&lt;HomeScreen&gt; createState() =&gt; _HomeScreenState();
+}
+
+class _HomeScreenState extends State&lt;HomeScreen&gt; {
+  var uid = FirebaseAuth.instance.currentUser!.uid;
+  var dbRef = FirebaseDatabase.instance.ref();
+
+  int steps = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // listen for changes
+    dbRef.child("users/$uid/health/steps").onValue.listen((event) {
+      var value = event.snapshot.value;
+      setState(() {
+        steps = value != null ? value as int : 0;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Home"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () =&gt; FirebaseAuth.instance.signOut(),
+          ),
+        ],
+      ),
+      body: Center(
+        child: Text(
+          "Today's Steps: \n$steps",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: addSteps,
+        child: Icon(Icons.directions_walk),
+      ),
+    );
+  }
+
+  void addSteps() async {
+    int newSteps = steps + 1000;
+    await dbRef.child("users/$uid/health/steps").set(newSteps);
+  }
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar" style="justify-content:space-between;padding:0 16px">Home<span style="font-size:13px">⏻</span></div>
+                <div class="ph-body">
+                  <div class="ph-steps"><small>Today's Steps</small>3000</div>
+                  <div class="ph-fabmini">👣</div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Realtime Database</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Write once, read everywhere</h4>
+            <p><code>set(newSteps)</code> replaces the value at that path. The <code>onValue</code> listener on every open device fires, so the number jumps by 1000 without any refresh button.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Why <code>uid</code> in the path?</b><p>Each account gets its own branch: <code>users/&lt;uid&gt;/health/steps</code>. The security rules can then allow a user to touch only their own node.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h4>Where the number lives</h4>
+            <pre class="tree">health-app-day4
+└─ users
+   └─ Kx3f...9Qm   ← uid
+      └─ health
+         └─ steps: 3000</pre>
+          </div>
+          <div class="card">
+            <h4>Security rules — test mode</h4>
+<pre class="snippet">{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null &amp;&amp; auth.uid === $uid",
+        ".write": "auth != null &amp;&amp; auth.uid === $uid"
+      }
+    }
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b>The listener never stops</b><p><code>onValue.listen(...)</code> returns a subscription. Store it in a <code>StreamSubscription</code> field and call <code>cancel()</code> in <code>dispose()</code>, otherwise the callback can hit a dead <code>setState</code>.</p></div>
+          </div>
+          <div class="note fix" style="margin:0">
+            <span class="ico">×</span>
+            <div><b>Permission denied</b><p>Test-mode rules expire after 30 days. If writes suddenly fail, check the <b>Rules</b> tab — the date usually explains it. Publish the rules above with your own uid check.</p></div>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Run the app on two emulators with the same account and tap the FAB on one. The other updates live. Then use <code>update({"steps": 0, "updatedAt": ServerValue.timestamp})</code> and look at the tree in the console.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 7 ================= -->
+      <section class="step" id="step-7">
+        <div class="step-head reveal">
+          <span class="step-no">07</span>
+          <div>
+            <h2>Cloud Firestore</h2>
+            <p class="step-sub">A collection of daily records instead of one counter: write a document, then stream the list back, newest first.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:78%"></i></div>
+
+        <figure class="code">
+          <figcaption><span class="file">lib/HomeScreen.dart — Cloud Firestore version</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="dart">import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State&lt;HomeScreen&gt; createState() =&gt; _HomeScreenState();
+}
+
+class _HomeScreenState extends State&lt;HomeScreen&gt; {
+  var uid = FirebaseAuth.instance.currentUser!.uid;
+
+  TextEditingController stepsCtrl = TextEditingController();
+  TextEditingController caloriesCtrl = TextEditingController();
+  TextEditingController sleepCtrl = TextEditingController();
+
+  String today() {
+    return DateTime.now().toIso8601String().substring(0, 10);
+  }
+
+  Future&lt;void&gt; saveData() async {
+    await FirebaseFirestore.instance
+        .collection("health")
+        .doc(uid)
+        .collection("daily")
+        .add({
+      "steps": int.tryParse(stepsCtrl.text) ?? 0,
+      "calories": int.tryParse(caloriesCtrl.text) ?? 0,
+      "sleep": double.tryParse(sleepCtrl.text) ?? 0.0,
+      "date": today(),
+      "timestamp": FieldValue.serverTimestamp(),
+    });
+
+    stepsCtrl.clear();
+    caloriesCtrl.clear();
+    sleepCtrl.clear();
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Simple Health App")),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            TextField(
+              controller: stepsCtrl,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: "Steps"),
+            ),
+            TextField(
+              controller: caloriesCtrl,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: "Calories"),
+            ),
+            TextField(
+              controller: sleepCtrl,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: "Sleep (hrs)"),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: saveData,
+              child: const Text("Save Today's Data"),
+            ),
+            const SizedBox(height: 20),
+            StreamBuilder&lt;QuerySnapshot&gt;(
+              stream: FirebaseFirestore.instance
+                  .collection("health")
+                  .doc(uid)
+                  .collection("daily")
+                  .orderBy("timestamp", descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Text("Loading...");
+                }
+
+                if (snapshot.data!.docs.isEmpty) {
+                  return Text("No entries yet.");
+                }
+
+                return Expanded(
+                  child: ListView(
+                    children: snapshot.data!.docs.map((doc) {
+                      final data = doc.data() as Map&lt;String, dynamic&gt;;
+
+                      return Card(
+                        child: ListTile(
+                          title: Text("Steps: ${data['steps']}"),
+                          subtitle: Text(
+                            "Calories: ${data['calories']}\n"
+                            "Sleep: ${data['sleep']} hrs\n"
+                            "Date: ${data['date']}",
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}</code></pre>
+        </figure>
+
+        <div class="preview">
+          <div>
+            <div class="phone">
+              <div class="ph-screen">
+                <div class="ph-status"><span>9:41</span><span>▮▮▮</span></div>
+                <div class="ph-appbar">Simple Health App</div>
+                <div class="ph-body top" style="gap:7px;padding:10px 12px;justify-content:flex-start">
+                  <div class="ph-field">Steps &nbsp; 8500</div>
+                  <div class="ph-field">Calories &nbsp; 2100</div>
+                  <div class="ph-field">Sleep (hrs) &nbsp; 7.5</div>
+                  <div class="ph-btnmini" style="width:100%;text-align:center">Save Today's Data</div>
+                  <div class="ph-rows" style="margin-top:4px">
+                    <div class="ph-panel">
+                      <div class="ph-panel-b"><b style="color:#14181f">Steps: 8500</b><br>Calories: 2100 · Sleep: 7.5 hrs<br><span style="color:#9aa3b8">2026-11-11</span></div>
+                    </div>
+                    <div class="ph-panel">
+                      <div class="ph-panel-b"><b style="color:#14181f">Steps: 6100</b><br>Calories: 1850 · Sleep: 6.5 hrs<br><span style="color:#9aa3b8">2026-11-10</span></div>
+                    </div>
+                    <div class="ph-panel">
+                      <div class="ph-panel-b"><b style="color:#14181f">Steps: 10400</b><br>Calories: 2400 · Sleep: 8.0 hrs<br><span style="color:#9aa3b8">2026-11-09</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ph-caption">Cloud Firestore</div>
+          </div>
+          <div class="preview-side">
+            <span class="out-tag" style="margin-top:0">What happens</span>
+            <h4>Add a document, watch the list</h4>
+            <p><code>add()</code> creates a document with an auto id inside <code>health/&lt;uid&gt;/daily</code>. The <code>StreamBuilder</code> listens to the query, so the new card appears before <code>saveData()</code> has even returned.</p>
+            <div class="note info">
+              <span class="ico">i</span>
+              <div><b>Try parsing before you store</b><p><code>int.tryParse("abc")</code> returns <code>null</code>, and <code>?? 0</code> turns that into a clean zero. Never trust a text field with <code>int.parse</code>.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <table>
+          <tr><th style="width:26%">Field</th><th>Type</th><th>Source</th></tr>
+          <tr><td><code>steps</code></td><td>int</td><td><code>int.tryParse(...) ?? 0</code></td></tr>
+          <tr><td><code>calories</code></td><td>int</td><td><code>int.tryParse(...) ?? 0</code></td></tr>
+          <tr><td><code>sleep</code></td><td>double</td><td><code>double.tryParse(...) ?? 0.0</code></td></tr>
+          <tr><td><code>date</code></td><td>String</td><td><code>2026-11-11</code> — first 10 characters of ISO-8601</td></tr>
+          <tr><td><code>timestamp</code></td><td>Timestamp</td><td><code>FieldValue.serverTimestamp()</code></td></tr>
+        </table>
+
+        <div class="grid-2">
+          <div class="card">
+            <h4>Collection path</h4>
+            <pre class="tree">health                  ← collection
+└─ Kx3f...9Qm            ← document (uid)
+   └─ daily             ← sub-collection
+      ├─ aB9x...        ← auto id
+      │  ├ steps: 8500
+      │  ├ calories: 2100
+      │  ├ sleep: 7.5
+      │  ├ date: "2026-11-11"
+      │  └ timestamp: 🔥
+      └─ cD2m...</pre>
+          </div>
+          <div class="card">
+            <h4>Firestore rules — per user</h4>
+<pre class="snippet">rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /health/{uid}/{doc=**} {
+      allow read, write:
+        if request.auth != null
+        &amp;&amp; request.auth.uid == uid;
+    }
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="note warn" style="margin:0">
+            <span class="ico">!</span>
+            <div><b><code>orderBy</code> skips documents</b><p>A document with no <code>timestamp</code> field is silently left out of the ordered query. Write it on every entry — including test data added by hand in the console.</p></div>
+          </div>
+          <div class="note info" style="margin:0">
+            <span class="ico">i</span>
+            <div><b>serverTimestamp is pending at first</b><p>Locally it is <code>null</code> until the server replies. If you need to display it immediately, use <code>DateTime.now()</code> or listen again after the write completes.</p></div>
+          </div>
+        </div>
+
+        <div class="note tip">
+          <span class="ico">▶</span>
+          <div><b>Try it</b><p>Add a <code>ListView</code> <code>Dismissible</code> wrapper that calls <code>doc.reference.delete()</code>. Then add <code>.limit(3)</code> to the query and watch only the newest three cards survive. Finally remove <code>descending</code> and see the order flip.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= STEP 8 ================= -->
+      <section class="step" id="step-8">
+        <div class="step-head reveal">
+          <span class="step-no">08</span>
+          <div>
+            <h2>Publish the app</h2>
+            <p class="step-sub">A signed release bundle, then an upload to the Play Console. The full reference lives at <code>docs.flutter.dev/deployment/android</code>.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:88%"></i></div>
+
+        <div class="grid-2">
+          <div class="card">
+            <span class="num">Read this</span>
+            <h4>Official Android deployment guide</h4>
+            <p>Signing, versioning, R8 shrinking and the app bundle format — kept current with each Flutter release.</p>
+            <a class="url" href="https://docs.flutter.dev/deployment/android" target="_blank">docs.flutter.dev/deployment/android</a>
+          </div>
+          <div class="card">
+            <span class="num">Upload here</span>
+            <h4>Google Play Console</h4>
+            <p>One-time $25 developer account. Start with an <b>internal testing</b> track — no review wait for invited testers.</p>
+            <a class="url" href="https://play.google.com/console" target="_blank">play.google.com/console</a>
+          </div>
+        </div>
+
+        <ol class="olist">
+          <li><span><b>Brand the app.</b> Set <code>android:label</code> in the manifest and replace the launcher icon — the default Flutter logo cannot ship.</span></li>
+          <li><span><b>Bump the version</b> in <code>pubspec.yaml</code>: <code>version: 1.0.0+1</code>. The part after <code>+</code> is the version code the store uses.</span></li>
+          <li><span><b>Create an upload keystore</b> with <code>keytool</code> and keep the file <i>and</i> the passwords somewhere safe.</span></li>
+          <li><span><b>Point Gradle at it</b> through a <code>key.properties</code> file that is not committed.</span></li>
+          <li><span><b>Build the bundle.</b> <code>flutter build appbundle</code> writes <code>app-release.aab</code>.</span></li>
+          <li><span><b>Test the release build</b> on a real device. Release uses different signing and R8 shrinking — bugs hide there.</span></li>
+          <li><span><b>Upload</b> to the Play Console, fill the store listing, run internal testing, then promote.</span></li>
+        </ol>
+
+        <h3 class="sec-title" style="margin-top:24px">1 · Create the keystore</h3>
+        <div class="term" data-sim>
+          <div class="term-bar"><i></i><i></i><i></i><span>powershell</span><button class="runbtn" type="button">▶ Run</button></div>
+<pre class="term-body"><span class="ln cmd">keytool -genkey -v -keystore $env:USERPROFILE\upload-keystore.jks -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload</span><span class="ln dim">Enter keystore password:</span><span class="ln">Re-enter new password:</span><span class="ln">What is your first and last name? [Unknown]:  Aarav Sharma</span><span class="ln ok">Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA)</span><span class="ln"><span class="cursor"></span></span></pre>
+        </div>
+
+        <div class="note warn">
+          <span class="ico">!</span>
+          <div><b>Lose this file and the app is stuck</b><p>Play identifies an app by its signing key. If you lose the keystore you cannot ship updates to the same listing — you have to publish a new app. Back up <code>upload-keystore.jks</code>, <code>key.properties</code> and both passwords.</p></div>
+        </div>
+
+        <h3 class="sec-title" style="margin-top:24px">2 · key.properties</h3>
+        <figure class="code">
+          <figcaption><span class="file">android/key.properties (never commit)</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="properties">storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=upload
+storeFile=C:/Users/you/upload-keystore.jks</code></pre>
+        </figure>
+
+        <h3 class="sec-title" style="margin-top:24px">3 · Wire it into Gradle</h3>
+        <figure class="code">
+          <figcaption><span class="file">android/app/build.gradle.kts</span><button class="copy" type="button">Copy</button></figcaption>
+<pre><code data-lang="kotlin">import java.util.Properties
+import java.io.FileInputStream
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    // ... namespace, compileSdk, defaultConfig ...
+
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+}</code></pre>
+        </figure>
+
+        <h3 class="sec-title" style="margin-top:24px">4 · Build</h3>
+        <div class="term" data-sim>
+          <div class="term-bar"><i></i><i></i><i></i><span>powershell — project root</span><button class="runbtn" type="button">▶ Run</button></div>
+<pre class="term-body"><span class="ln cmd">flutter build appbundle</span><span class="ln">Running Gradle task 'bundleRelease'...</span><span class="ln ok">✓ Built build\app\outputs\bundle\release\app-release.aab (24.6MB)</span><span class="ln cmd">flutter build apk --release</span><span class="ln ok">✓ Built build\app\outputs\flutter-apk\app-release.apk (21.3MB)</span><span class="ln"><span class="cursor"></span></span></pre>
+        </div>
+
+        <table>
+          <tr><th style="width:46%">Command</th><th>Output</th></tr>
+          <tr><td><code>flutter build appbundle</code></td><td><code>.aab</code> — the only format the Play Store accepts.</td></tr>
+          <tr><td><code>flutter build apk --release</code></td><td>One universal <code>.apk</code>, good for direct installs and testing.</td></tr>
+          <tr><td><code>flutter build apk --split-per-abi</code></td><td>Smaller APKs per CPU type — use for websites, not for Play.</td></tr>
+          <tr><td><code>flutter build ipa</code></td><td>iOS archive, needs a Mac with Xcode.</td></tr>
+        </table>
+
+        <div class="note info">
+          <span class="ico">i</span>
+          <div><b>First upload is manual, later ones can be automated</b><p>The Play Console needs the store listing filled once by hand. After that you can push bundles with <code>fastlane supply</code>, the Gradle Play Publisher plugin, or a CI workflow.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= CHALLENGES ================= -->
+      <section class="step" id="challenges">
+        <div class="step-head reveal">
+          <span class="step-no">09</span>
+          <div>
+            <h2>Challenges</h2>
+            <p class="step-sub">Each one extends the app you just built. No challenge needs a new concept.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:95%"></i></div>
+
+        <div class="chal">
+          <div class="ch">
+            <h4><span>01 · FORM</span> Validate before you submit</h4>
+            <p>Wrap the fields in a <code>Form</code> with a <code>GlobalKey&lt;FormState&gt;</code>. Require a name of at least three characters and reject a sugar level below 70. Show the errors inline instead of opening the dialog.</p>
+            <div class="hint"><b>Hint</b> <code>TextFormField</code> + <code>validator</code>, then <code>_formKey.currentState!.validate()</code>.</div>
+          </div>
+          <div class="ch">
+            <h4><span>02 · SHEETS</span> Save from the summary</h4>
+            <p>Add a "Confirm" button inside the modal sheet that writes the form values to Firestore, closes the sheet, and shows a SnackBar on the form screen.</p>
+            <div class="hint"><b>Hint</b> Call <code>Navigator.pop(sheetContext)</code> before the SnackBar, or use the parent <code>context</code> for the messenger.</div>
+          </div>
+          <div class="ch">
+            <h4><span>03 · MAPS</span> Distance to the clinic</h4>
+            <p>Place a fixed marker at a clinic, then print the distance in kilometres between the user and the clinic using <code>Geolocator.distanceBetween()</code>.</p>
+            <div class="hint"><b>Hint</b> The result is metres — divide by 1000 and format to one decimal.</div>
+          </div>
+          <div class="ch">
+            <h4><span>04 · AUTH</span> Friendly error messages</h4>
+            <p>Replace <code>e.message</code> with your own strings for <code>user-not-found</code>, <code>wrong-password</code>, <code>invalid-email</code> and <code>weak-password</code>. Fall back to a generic message.</p>
+            <div class="hint"><b>Hint</b> <code>e.code</code> is the key of the map; <code>e.message</code> is for the log.</div>
+          </div>
+          <div class="ch">
+            <h4><span>05 · DATA</span> Read the record back</h4>
+            <p>Show today's saved record on the Home screen above the list: total steps, average sleep and the number of entries. Compute all three from the same stream.</p>
+            <div class="hint"><b>Hint</b> One <code>StreamBuilder</code>, then reduce over <code>snapshot.data!.docs</code>.</div>
+          </div>
+          <div class="ch">
+            <h4><span>06 · SHIP</span> A signed test build</h4>
+            <p>Change the app label and icon, build a signed <code>.aab</code>, install the release APK on a phone, and prove the debug banner is gone.</p>
+            <div class="hint"><b>Hint</b> <code>flutter build apk --release</code>, then <code>adb install -r build/app/outputs/flutter-apk/app-release.apk</code>.</div>
+          </div>
+        </div>
+
+        <div class="note info">
+          <span class="ico">✓</span>
+          <div><b>Definition of done</b><p>A fresh account can sign up, submit the form, see its own map position, save a record and see it in the list — with no red screens, no stuck spinners, and no data leaking between two accounts.</p></div>
+        </div>
+      </section>
+
+      <!-- ================= CHEAT SHEET ================= -->
+      <section class="step" id="cheatsheet">
+        <div class="step-head reveal">
+          <span class="step-no">10</span>
+          <div>
+            <h2>Cheat sheet</h2>
+            <p class="step-sub">Every API from today, plus the errors that will find you.</p>
+          </div>
+        </div>
+        <div class="prog"><i class="reveal" style="--p:100%"></i></div>
+
+        <table>
+          <tr><th style="width:30%">Task</th><th>Code</th></tr>
+          <tr><td>Read text input</td><td><code>TextEditingController c = TextEditingController();</code> → <code>c.text</code></td></tr>
+          <tr><td>Date picker</td><td><code>await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2020), lastDate: DateTime(2030));</code></td></tr>
+          <tr><td>Time picker</td><td><code>await showTimePicker(context: context, initialTime: TimeOfDay.now());</code></td></tr>
+          <tr><td>Alert dialog</td><td><code>showDialog(context: context, builder: (_) =&gt; AlertDialog(...));</code></td></tr>
+          <tr><td>Modal sheet</td><td><code>showModalBottomSheet(context: context, builder: (_) =&gt; ...);</code></td></tr>
+          <tr><td>Persistent sheet</td><td><code>scaffoldKey.currentState!.showBottomSheet((_) =&gt; ...);</code></td></tr>
+          <tr><td>Permission check</td><td><code>await Geolocator.checkPermission();</code></td></tr>
+          <tr><td>Current position</td><td><code>Position p = await Geolocator.getCurrentPosition();</code></td></tr>
+          <tr><td>Distance</td><td><code>Geolocator.distanceBetween(lat1, lon1, lat2, lon2);</code> → metres</td></tr>
+          <tr><td>Firebase start</td><td><code>await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);</code></td></tr>
+          <tr><td>Sign in</td><td><code>FirebaseAuth.instance.signInWithEmailAndPassword(email: e, password: p);</code></td></tr>
+          <tr><td>Sign up</td><td><code>FirebaseAuth.instance.createUserWithEmailAndPassword(email: e, password: p);</code></td></tr>
+          <tr><td>Auth stream</td><td><code>FirebaseAuth.instance.authStateChanges()</code></td></tr>
+          <tr><td>Current user id</td><td><code>FirebaseAuth.instance.currentUser!.uid</code></td></tr>
+          <tr><td>RTDB write</td><td><code>ref.child("users/$uid/health/steps").set(3000);</code></td></tr>
+          <tr><td>RTDB listen</td><td><code>ref.child(path).onValue.listen((e) { ... });</code></td></tr>
+          <tr><td>Firestore add</td><td><code>col.add({...});</code></td></tr>
+          <tr><td>Firestore stream</td><td><code>col.orderBy("timestamp", descending: true).snapshots();</code></td></tr>
+          <tr><td>Server time</td><td><code>FieldValue.serverTimestamp()</code></td></tr>
+          <tr><td>Release bundle</td><td><code>flutter build appbundle</code></td></tr>
+        </table>
+
+        <h3 class="sec-title" style="margin-top:26px">Errors you will meet again</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h4 style="color:#b93a3a">No Firebase App '[DEFAULT]' has been created</h4>
+            <p><code>Firebase.initializeApp()</code> did not run, or ran after the first Firebase call. Add it at the top of <code>main()</code>, after <code>ensureInitialized()</code>.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">PlatformException (sign_in_failed)</h4>
+            <p>The email/password provider is disabled, or the SHA-1 fingerprint is missing from the Firebase Android app. Enable the provider, then re-download the config.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">PERMISSION_DENIED: Missing or insufficient permissions</h4>
+            <p>Firestore or RTDB rules. Test mode expires after 30 days; write rules that compare <code>request.auth.uid</code> with the path.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">Location services are disabled</h4>
+            <p><code>getCurrentPosition()</code> throws before any permission dialog if GPS is off. Check <code>Geolocator.isLocationServiceEnabled()</code> and prompt the user.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">setState() called after dispose()</h4>
+            <p>An async callback finished after the screen was popped. Guard with <code>if (!mounted) return;</code> before <code>setState</code>.</p>
+          </div>
+          <div class="card">
+            <h4 style="color:#b93a3a">The class 'X' is abstract and can't be instantiated</h4>
+            <p>Left over from Day 1: you created an object from an <code>abstract</code> class. Create the child instead.</p>
+          </div>
+        </div>
+
+        <div class="endcard">
+          <h3>That is Day 4.</h3>
+          <p>You can collect typed input, overlay a dialog or a sheet, read a GPS position, sign a user in, store their data in two different Firebase databases, and hand a signed bundle to the Play Store. Everything from here on is polish and scale.</p>
+          <div class="links">
+            <a href="https://docs.flutter.dev/deployment/android" target="_blank">Deploy to Android</a>
+            <a href="https://firebase.google.com/docs/auth" target="_blank">Firebase Auth</a>
+            <a href="https://firebase.google.com/docs/database" target="_blank">Realtime Database</a>
+            <a href="https://firebase.google.com/docs/firestore" target="_blank">Cloud Firestore</a>
+            <a href="https://pub.dev/packages/geolocator" target="_blank">geolocator</a>
+            <a href="https://pub.dev/packages/google_maps_flutter" target="_blank">google_maps_flutter</a>
+          </div>
+        </div>
+
+        <p class="foot-note">Certified Flutter Application Development (Android ATC) · Day 4 Lab · Forms, Maps &amp; Firebase</p>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- tiny syntax highlighter ---------- */
+  var KEYWORDS = new Set(["abstract","as","assert","async","await","break","case","catch","class","const","continue","covariant","default","deferred","do","dynamic","else","enum","export","extends","extension","external","factory","false","final","finally","for","Function","get","hide","if","implements","import","in","interface","is","late","library","mixin","new","null","on","operator","part","required","rethrow","return","sealed","set","show","static","super","switch","sync","this","throw","true","try","typedef","var","void","when","while","with","yield"]);
+  var TYPES = new Set(["int","double","num","String","bool","List","Map","Set","Object","Future","Stream","Iterable","Duration","DateTime","RegExp","Exception","Iterator","Never","Record","Symbol","Type","Uri","BigInt","Position","LatLng","Widget","StatelessWidget","StatefulWidget","State","BuildContext","MaterialApp","Scaffold"]);
+  function esc(s){return s.replace(/[&<>]/g,function(c){return c==="&"?"&amp;":c==="<"?"&lt;":"&gt;";});}
+  function paintString(s){
+    var e = esc(s);
+    e = e.replace(/(\$\{[^}]*\}|\$[A-Za-z_][A-Za-z0-9_]*)/g,'<span class="tok-i">$1</span>');
+    return '<span class="tok-s">'+e+'</span>';
+  }
+  var TOKEN = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|\b(\d+(?:\.\d+)?)\b|\b([A-Za-z_][A-Za-z0-9_]*)\b/g;
+  function highlight(src){
+    var out = "", last = 0, m;
+    TOKEN.lastIndex = 0;
+    while((m = TOKEN.exec(src))){
+      out += esc(src.slice(last, m.index));
+      if(m[1]) out += '<span class="tok-c">'+esc(m[1])+'</span>';
+      else if(m[2]) out += paintString(m[2]);
+      else if(m[3]) out += '<span class="tok-n">'+esc(m[3])+'</span>';
+      else {
+        var w = m[4], cls = "";
+        if(KEYWORDS.has(w)) cls = "tok-k";
+        else if(TYPES.has(w)) cls = "tok-t";
+        else if(/^[A-Z]/.test(w)) cls = "tok-T";
+        else if(/^[a-z][A-Za-z0-9_]*$/.test(w) && /^\s*\(/.test(src.slice(m.index + w.length))) cls = "tok-f";
+        out += cls ? '<span class="'+cls+'">'+esc(w)+'</span>' : esc(w);
+      }
+      last = m.index + m[0].length;
+    }
+    out += esc(src.slice(last));
+    return out;
+  }
+  document.querySelectorAll('code[data-lang="dart"]').forEach(function(c){
+    c.innerHTML = highlight(c.textContent);
+  });
+
+  /* ---------- copy buttons ---------- */
+  document.querySelectorAll("figure.code").forEach(function(fig){
+    var btn = fig.querySelector(".copy"), code = fig.querySelector("code");
+    if(!btn || !code) return;
+    btn.addEventListener("click", function(){
+      var text = code.textContent;
+      function done(ok){ btn.textContent = ok ? "Copied" : "Press Ctrl+C"; setTimeout(function(){ btn.textContent = "Copy"; }, 1400); }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){ done(true); }, function(){ done(false); });
+      } else { done(false); }
+    });
+  });
+
+  /* ---------- terminal run simulation ---------- */
+  function playTerm(t){
+    var lines = t.querySelectorAll(".ln");
+    lines.forEach(function(l){ l.style.opacity = 0; l.style.transform = "translateY(5px)"; });
+    lines.forEach(function(l, i){
+      setTimeout(function(){
+        l.style.transition = "opacity .22s ease, transform .22s ease";
+        l.style.opacity = 1; l.style.transform = "none";
+      }, 90 * i);
+    });
+  }
+  document.querySelectorAll(".term[data-sim]").forEach(function(t){
+    var btn = t.querySelector(".runbtn");
+    if(btn) btn.addEventListener("click", function(){ playTerm(t); });
+  });
+
+  /* ---------- step reveal ---------- */
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:.1, rootMargin:"0px 0px -40px 0px"});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  /* ---------- scroll spy ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll("#railnav a"));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute("href")); }).filter(Boolean);
+  if("IntersectionObserver" in window && targets.length){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(a){ a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id); });
+        }
+      });
+    }, {rootMargin:"-15% 0px -70% 0px"});
+    targets.forEach(function(s){ spy.observe(s); });
+  }
+
+  /* ---------- form summary playground ---------- */
+  var pgName = document.getElementById("pg-name");
+  var pgGender = document.getElementById("pg-gender");
+  var pgSugar = document.getElementById("pg-sugar");
+  var pgOut = document.getElementById("pg-out");
+  if(pgName && pgOut){
+    var updateSummary = function(){
+      var name = pgName.value.trim() || "(no name)";
+      var gender = pgGender.value.trim() || "Male";
+      var sugar = parseInt(pgSugar.value, 10);
+      if(!isFinite(sugar)) sugar = 0;
+      pgOut.innerHTML =
+        '<span class="ln">Name : ' + esc(name) + '</span>' +
+        '<span class="ln">Gender: ' + esc(gender) + '</span>' +
+        '<span class="ln">Fasting: No</span>' +
+        '<span class="ln">Date : Not Selected</span>' +
+        '<span class="ln">Time : Not Selected</span>' +
+        '<span class="ln ok">Sugar Level: ' + sugar + ' mg/dl</span>';
+    };
+    [pgName, pgGender, pgSugar].forEach(function(el){
+      el.addEventListener("input", updateSummary);
+      el.addEventListener("change", updateSummary);
+    });
+    updateSummary();
+  }
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- progress bars ----------
+     The bar starts at width:0, so it has no area and never crosses the
+     reveal observer threshold. Check its position directly instead. */
+  var bars = Array.prototype.slice.call(document.querySelectorAll(".prog i.reveal"));
+  var barTick = false;
+  function checkBars(){
+    barTick = false;
+    var vh = window.innerHeight;
+    bars = bars.filter(function(el){
+      if(el.getBoundingClientRect().top < vh - 40){
+        el.classList.add("in");
+        return false;
+      }
+      return true;
+    });
+    if(!bars.length){
+      window.removeEventListener("scroll", queueBars);
+      window.removeEventListener("resize", queueBars);
+    }
+  }
+  function queueBars(){
+    if(barTick) return;
+    barTick = true;
+    window.requestAnimationFrame(checkBars);
+  }
+  window.addEventListener("scroll", queueBars, {passive:true});
+  window.addEventListener("resize", queueBars);
+  checkBars();
+})();
+</script>
+</body>
+</html>
